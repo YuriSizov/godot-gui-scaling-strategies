@@ -34,26 +34,74 @@ layout_mode = 2
 text = "Content Scale Factor"
 options = Array[String](["50%", "75%", "100%", "125%", "150%", "200%"])
 
+[node name="TextureScaleSetting" parent="Layout" instance=ExtResource("2_i218e")]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Texture: Import Scale"
+options = Array[String](["1x", "2x", "4x"])
+
+[node name="TextureMipmapsSetting" parent="Layout" instance=ExtResource("2_i218e")]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Texture: Use Mipmaps"
+options = Array[String](["Off", "On"])
+
+[node name="FontScaleSetting" parent="Layout" instance=ExtResource("2_i218e")]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Font: Import Scale"
+options = Array[String](["Normal", "Oversampling", "MSDF 24px", "MSDF 40px"])
+
 [node name="Window" type="Window" parent="."]
 unique_name_in_owner = true
 title = "Demo"
-size = Vector2i(336, 416)
-visible = false
+position = Vector2i(0, 36)
+size = Vector2i(352, 634)
 wrap_controls = true
 unresizable = true
 script = ExtResource("3_h5uyj")
 
-[node name="Content" type="VBoxContainer" parent="Window"]
-custom_minimum_size = Vector2(320, 0)
+[node name="Content" type="MarginContainer" parent="Window"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="Layout" type="VBoxContainer" parent="Window/Content"]
+custom_minimum_size = Vector2(320, 0)
+layout_mode = 2
 theme_override_constants/separation = 16
 alignment = 1
 
-[node name="BigLabel" type="Label" parent="Window/Content"]
+[node name="TextScaling" type="VBoxContainer" parent="Window/Content/Layout"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Label" type="Label" parent="Window/Content/Layout/TextScaling"]
+layout_mode = 2
+text = "Text scaling"
+
+[node name="Split" type="ColorRect" parent="Window/Content/Layout/TextScaling"]
+custom_minimum_size = Vector2(0, 2)
+layout_mode = 2
+
+[node name="TextPreview1" type="HBoxContainer" parent="Window/Content/Layout/TextScaling"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Window/Content/Layout/TextScaling/TextPreview1"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"InfoLabel"
+text = "40px"
+vertical_alignment = 1
+
+[node name="TextLabel40px" type="Label" parent="Window/Content/Layout/TextScaling/TextPreview1"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 40
@@ -62,7 +110,18 @@ horizontal_alignment = 1
 vertical_alignment = 1
 uppercase = true
 
-[node name="AverageLabel" type="Label" parent="Window/Content"]
+[node name="TextPreview2" type="HBoxContainer" parent="Window/Content/Layout/TextScaling"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Window/Content/Layout/TextScaling/TextPreview2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"InfoLabel"
+text = "24px"
+vertical_alignment = 1
+
+[node name="TextLabel24px" type="Label" parent="Window/Content/Layout/TextScaling/TextPreview2"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 24
@@ -70,7 +129,18 @@ text = "Average label"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="SmallLabel" type="Label" parent="Window/Content"]
+[node name="TextPreview3" type="HBoxContainer" parent="Window/Content/Layout/TextScaling"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Window/Content/Layout/TextScaling/TextPreview3"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"InfoLabel"
+text = "10px"
+vertical_alignment = 1
+
+[node name="TextLabel10px" type="Label" parent="Window/Content/Layout/TextScaling/TextPreview3"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 10
@@ -78,7 +148,54 @@ text = "small label"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Texture32x32" type="TextureRect" parent="Window/Content"]
+[node name="Split" type="ColorRect" parent="Window/Content/Layout"]
+custom_minimum_size = Vector2(0, 4)
+layout_mode = 2
+
+[node name="TextureScaling" type="VBoxContainer" parent="Window/Content/Layout"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Label" type="Label" parent="Window/Content/Layout/TextureScaling"]
+layout_mode = 2
+text = "Texture scaling (from 64x64 source)"
+
+[node name="Split" type="ColorRect" parent="Window/Content/Layout/TextureScaling"]
+custom_minimum_size = Vector2(0, 2)
+layout_mode = 2
+
+[node name="TexturePreview4" type="HBoxContainer" parent="Window/Content/Layout/TextureScaling"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Window/Content/Layout/TextureScaling/TexturePreview4"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"InfoLabel"
+text = "16x16"
+vertical_alignment = 1
+
+[node name="Texture16x16" type="TextureRect" parent="Window/Content/Layout/TextureScaling/TexturePreview4"]
+unique_name_in_owner = true
+texture_filter = 4
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+size_flags_horizontal = 4
+texture = ExtResource("4_auj1r")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="TexturePreview1" type="HBoxContainer" parent="Window/Content/Layout/TextureScaling"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Window/Content/Layout/TextureScaling/TexturePreview1"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"InfoLabel"
+text = "32x32"
+vertical_alignment = 1
+
+[node name="Texture32x32" type="TextureRect" parent="Window/Content/Layout/TextureScaling/TexturePreview1"]
+unique_name_in_owner = true
 texture_filter = 4
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
@@ -87,7 +204,18 @@ texture = ExtResource("4_auj1r")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Texture64x64" type="TextureRect" parent="Window/Content"]
+[node name="TexturePreview2" type="HBoxContainer" parent="Window/Content/Layout/TextureScaling"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Window/Content/Layout/TextureScaling/TexturePreview2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"InfoLabel"
+text = "64x64"
+vertical_alignment = 1
+
+[node name="Texture64x64" type="TextureRect" parent="Window/Content/Layout/TextureScaling/TexturePreview2"]
+unique_name_in_owner = true
 texture_filter = 4
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
@@ -96,7 +224,18 @@ texture = ExtResource("4_auj1r")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Texture128x128" type="TextureRect" parent="Window/Content"]
+[node name="TexturePreview3" type="HBoxContainer" parent="Window/Content/Layout/TextureScaling"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Window/Content/Layout/TextureScaling/TexturePreview3"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"InfoLabel"
+text = "128x128"
+vertical_alignment = 1
+
+[node name="Texture128x128" type="TextureRect" parent="Window/Content/Layout/TextureScaling/TexturePreview3"]
+unique_name_in_owner = true
 texture_filter = 4
 custom_minimum_size = Vector2(128, 128)
 layout_mode = 2
