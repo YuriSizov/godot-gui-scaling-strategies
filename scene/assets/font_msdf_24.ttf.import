@@ -3,12 +3,12 @@
 importer="font_data_dynamic"
 type="FontFile"
 uid="uid://dp36i2hcxamhp"
-path="res://.godot/imported/font_msdf24.ttf-ebba5a563540ded7b295e5ea72bc5d55.fontdata"
+path="res://.godot/imported/font_msdf_24.ttf-de40c71cf33c4c83f490bb0c812f0239.fontdata"
 
 [deps]
 
-source_file="res://scene/assets/font_msdf24.ttf"
-dest_files=["res://.godot/imported/font_msdf24.ttf-ebba5a563540ded7b295e5ea72bc5d55.fontdata"]
+source_file="res://scene/assets/font_msdf_24.ttf"
+dest_files=["res://.godot/imported/font_msdf_24.ttf-de40c71cf33c4c83f490bb0c812f0239.fontdata"]
 
 [params]
 

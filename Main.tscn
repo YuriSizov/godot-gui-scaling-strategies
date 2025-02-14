@@ -17,46 +17,129 @@ theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 8
 script = ExtResource("1_r2ot1")
 
-[node name="Layout" type="VBoxContainer" parent="."]
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
 layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_right = 18
+
+[node name="Layout" type="VBoxContainer" parent="ScrollContainer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
 theme_override_constants/separation = 18
 
-[node name="Title" type="Label" parent="Layout"]
+[node name="Title" type="Label" parent="ScrollContainer/MarginContainer/Layout"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
 text = "Configuration options"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ScaleFactorSetting" parent="Layout" instance=ExtResource("2_i218e")]
+[node name="ScaleFactorSetting" parent="ScrollContainer/MarginContainer/Layout" instance=ExtResource("2_i218e")]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Content Scale Factor"
 options = Array[String](["50%", "75%", "100%", "125%", "150%", "200%"])
 
-[node name="TextureScaleSetting" parent="Layout" instance=ExtResource("2_i218e")]
+[node name="ScaleFactorExplanation" type="HBoxContainer" parent="ScrollContainer/MarginContainer/Layout"]
+layout_mode = 2
+
+[node name="Filler" type="Control" parent="ScrollContainer/MarginContainer/Layout/ScaleFactorExplanation"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="ScrollContainer/MarginContainer/Layout/ScaleFactorExplanation"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 3.0
+theme_type_variation = &"ExplanationLabel"
+text = "Content scale factor is a property of the Window node. Basically, it applies extra scaling transformation for every screen element.
+
+For the most part it just works, however there is an engine bug with how scaling affects content minimum size calculations. See the WindowScript.gd file for more details."
+autowrap_mode = 2
+
+[node name="TextureScaleSetting" parent="ScrollContainer/MarginContainer/Layout" instance=ExtResource("2_i218e")]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Texture: Import Scale"
 options = Array[String](["1x", "2x", "4x"])
 
-[node name="TextureMipmapsSetting" parent="Layout" instance=ExtResource("2_i218e")]
+[node name="TextureScaleExplanation" type="HBoxContainer" parent="ScrollContainer/MarginContainer/Layout"]
+layout_mode = 2
+
+[node name="Filler" type="Control" parent="ScrollContainer/MarginContainer/Layout/TextureScaleExplanation"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="ScrollContainer/MarginContainer/Layout/TextureScaleExplanation"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 3.0
+theme_type_variation = &"ExplanationLabel"
+text = "In this example, we're using SVG textures. This option affects the scale at which they are imported. That is to say that SVG textures are rasterized on import, and then their scale is fixed. E.g. a 32x32 file at the 2x scale will be imported as a 64x64 texture.
+
+You can achieve same results with raster textures, like PNG. You will need to prepare them with the correct scale beforehand, though, using your image editing software of choice."
+autowrap_mode = 2
+
+[node name="TextureMipmapsSetting" parent="ScrollContainer/MarginContainer/Layout" instance=ExtResource("2_i218e")]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Texture: Use Mipmaps"
 options = Array[String](["Off", "On"])
 
-[node name="FontScaleSetting" parent="Layout" instance=ExtResource("2_i218e")]
+[node name="TextureMipmapsExplanation" type="HBoxContainer" parent="ScrollContainer/MarginContainer/Layout"]
+layout_mode = 2
+
+[node name="Filler" type="Control" parent="ScrollContainer/MarginContainer/Layout/TextureMipmapsExplanation"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="ScrollContainer/MarginContainer/Layout/TextureMipmapsExplanation"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 3.0
+theme_type_variation = &"ExplanationLabel"
+text = "Mipmaps can be described as LOD for textures. When you increase the scale above, textures start to look crisp at bigger sizes. However, smaller sizes become jagged. Mipmaps help solve this issue by providing a version of the texture that is better scaled for different usage sizes.
+
+In this example, all textures are always imported with mipmapping enabled, but this is not the default. You must also enable mipmaps in texture filtering options, which is what this option does."
+autowrap_mode = 2
+
+[node name="FontScaleSetting" parent="ScrollContainer/MarginContainer/Layout" instance=ExtResource("2_i218e")]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Font: Import Scale"
-options = Array[String](["Normal", "Oversampling", "MSDF 24px", "MSDF 40px"])
+options = Array[String](["Normal", "OS 2x", "OS 4x", "MSDF 24px", "MSDF 40px"])
+
+[node name="FontScaleExplanation" type="HBoxContainer" parent="ScrollContainer/MarginContainer/Layout"]
+layout_mode = 2
+
+[node name="Filler" type="Control" parent="ScrollContainer/MarginContainer/Layout/FontScaleExplanation"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="ScrollContainer/MarginContainer/Layout/FontScaleExplanation"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 3.0
+theme_type_variation = &"ExplanationLabel"
+text = "There are two main ways to work with scaling when it comes to fonts. Neither is objectively better and your choice will depend on the specific font and usage context.
+
+- Oversampling. This is the most straightforward option. It boils down to rasterizing the font at a higher resolution and then downsampling it to the required size. No filtering is applied, however, which means that at every size that is not exactly matching the oversampling scale the font becomes jagged.
+
+- Multi-channel signed distance fields, or MSDF for short. This approach uses approximations based on signed distance fields, as the name suggests. This yields better scalable results, but can cause artifacts in glyphs, such as their shape and position on the line.
+
+Note that fonts can sometimes be broken and require expensive processing to be fixed, an option that is not available in Godot and can lead to gaps and shape breaks, specifically caused by self-intersections."
+autowrap_mode = 2
 
 [node name="Window" type="Window" parent="."]
 unique_name_in_owner = true
 title = "Demo"
 position = Vector2i(0, 36)
 size = Vector2i(352, 634)
+visible = false
 wrap_controls = true
 unresizable = true
 script = ExtResource("3_h5uyj")

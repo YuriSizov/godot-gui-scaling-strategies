@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=8 format=3 uid="uid://dqsy3atrb1x8v"]
+[gd_resource type="Theme" load_steps=9 format=3 uid="uid://dqsy3atrb1x8v"]
 
 [ext_resource type="FontFile" uid="uid://ce35uqvkdkhya" path="res://assets/fonts/NotoSans-VariableFont_wdth,wght.ttf" id="1_2kt8l"]
 
@@ -43,6 +43,13 @@ border_width_bottom = 3
 border_color = Color(0.105627, 0.144738, 0.186187, 1)
 border_blend = true
 
+[sub_resource type="FontVariation" id="FontVariation_n54d7"]
+base_font = ExtResource("1_2kt8l")
+variation_opentype = {
+2003072104: 100,
+2003265652: 600
+}
+
 [sub_resource type="FontVariation" id="FontVariation_f6ifb"]
 base_font = ExtResource("1_2kt8l")
 
@@ -56,5 +63,9 @@ Button/styles/disabled = SubResource("StyleBoxFlat_uuow5")
 Button/styles/hover = SubResource("StyleBoxFlat_o7or4")
 Button/styles/normal = SubResource("StyleBoxFlat_toxec")
 Button/styles/pressed = SubResource("StyleBoxFlat_mfxay")
+ExplanationLabel/base_type = &"Label"
+ExplanationLabel/colors/font_color = Color(0.601443, 0.633597, 0.666852, 1)
+ExplanationLabel/font_sizes/font_size = 17
+ExplanationLabel/fonts/font = SubResource("FontVariation_n54d7")
 InfoLabel/base_type = &"Label"
 InfoLabel/colors/font_color = Color(0.458711, 0.516099, 0.562209, 1)

@@ -12,9 +12,10 @@ const TEXTURE_MIPMAPS_OPTIONS: Array[bool] = [ false, true ]
 const TEXTURE_MIPMAPS_DEFAULT := 0
 const FONT_SCALE_OPTIONS: Array[FontFile] = [
 	preload("res://scene/assets/font_normal.ttf"),
-	preload("res://scene/assets/font_oversampling.ttf"),
-	preload("res://scene/assets/font_msdf24.ttf"),
-	preload("res://scene/assets/font_msdf48.ttf"),
+	preload("res://scene/assets/font_oversampling_2x.ttf"),
+	preload("res://scene/assets/font_oversampling_4x.ttf"),
+	preload("res://scene/assets/font_msdf_24.ttf"),
+	preload("res://scene/assets/font_msdf_48.ttf"),
 ]
 const FONT_SCALE_DEFAULT := 0
 

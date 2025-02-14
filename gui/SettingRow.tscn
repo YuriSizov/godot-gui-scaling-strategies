@@ -1,8 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://8mgnsraqnj2d"]
+[gd_scene load_steps=2 format=3 uid="uid://8mgnsraqnj2d"]
 
 [ext_resource type="Script" path="res://gui/SettingRow.gd" id="1_xicrk"]
-
-[sub_resource type="ButtonGroup" id="ButtonGroup_k7l12"]
 
 [node name="SettingRow" type="HBoxContainer"]
 anchors_preset = 10
@@ -20,22 +18,5 @@ size_flags_horizontal = 3
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_stretch_ratio = 1.5
 theme_override_constants/separation = 0
-
-[node name="Button" type="Button" parent="Buttons"]
-layout_mode = 2
-size_flags_horizontal = 3
-toggle_mode = true
-button_group = SubResource("ButtonGroup_k7l12")
-
-[node name="Button2" type="Button" parent="Buttons"]
-layout_mode = 2
-size_flags_horizontal = 3
-toggle_mode = true
-button_group = SubResource("ButtonGroup_k7l12")
-
-[node name="Button3" type="Button" parent="Buttons"]
-layout_mode = 2
-size_flags_horizontal = 3
-toggle_mode = true
-button_group = SubResource("ButtonGroup_k7l12")
