@@ -1,9 +1,11 @@
-[gd_scene load_steps=5 format=3 uid="uid://c2ef4nyv2ebsy"]
+[gd_scene load_steps=7 format=3 uid="uid://c2ef4nyv2ebsy"]
 
 [ext_resource type="Script" path="res://Main.gd" id="1_r2ot1"]
 [ext_resource type="PackedScene" uid="uid://8mgnsraqnj2d" path="res://gui/SettingRow.tscn" id="2_i218e"]
 [ext_resource type="Script" path="res://scene/WindowScript.gd" id="3_h5uyj"]
 [ext_resource type="Texture2D" uid="uid://ctta2dry2npxy" path="res://icon.svg" id="4_auj1r"]
+[ext_resource type="PackedScene" uid="uid://b0ujxspc3tcrn" path="res://scene/environments/Environment2D.tscn" id="4_inthc"]
+[ext_resource type="PackedScene" uid="uid://c8dco853ln1y8" path="res://scene/environments/Environment3D.tscn" id="5_4t02t"]
 
 [node name="Main" type="MarginContainer"]
 anchors_preset = 15
@@ -134,17 +136,58 @@ text = "There are two main ways to work with scaling when it comes to fonts. Nei
 Note that fonts can sometimes be broken and require expensive processing to be fixed, an option that is not available in Godot and can lead to gaps and shape breaks, specifically caused by self-intersections."
 autowrap_mode = 2
 
+[node name="BackgroundSetting" parent="ScrollContainer/MarginContainer/Layout" instance=ExtResource("2_i218e")]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Background Environment"
+options = Array[String](["Void", "2D", "3D"])
+
+[node name="BackgroundExplanation" type="HBoxContainer" parent="ScrollContainer/MarginContainer/Layout"]
+layout_mode = 2
+
+[node name="Filler" type="Control" parent="ScrollContainer/MarginContainer/Layout/BackgroundExplanation"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="ScrollContainer/MarginContainer/Layout/BackgroundExplanation"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 3.0
+theme_type_variation = &"ExplanationLabel"
+text = "These approaches work well with GUI apps made in Godot. However, games are trickier. There is an unfortunate limitation that the content scale factor is only available on Window nodes, not just any Viewport. This makes it hard to mix this approach with scaling strategies needed by 2D and 3D games.
+
+The biggest issue to solve is going to be: how to react to artibtrary window size changes. In some environments this is an irrelevant question and sizes are fixed at a certain point. But on desktop this might require some consideration, or get in the way of using this approach all together.
+
+In this example the 2D environment is zoomed back and forth based on the content scale factor, as 2D visuals degrade once the scale is increased. This can be counteracted by making all your assets with a higher resolution, and then scaling it back accordingly. The 3D environment is less of an issue, as the scale directly affects the camera and not the world."
+autowrap_mode = 2
+
 [node name="Window" type="Window" parent="."]
 unique_name_in_owner = true
+disable_3d = true
+gui_embed_subwindows = true
 title = "Demo"
-position = Vector2i(0, 36)
+position = Vector2i(1235, 36)
 size = Vector2i(352, 634)
-visible = false
 wrap_controls = true
 unresizable = true
 script = ExtResource("3_h5uyj")
 
-[node name="Content" type="MarginContainer" parent="Window"]
+[node name="Background" type="Node" parent="Window"]
+
+[node name="EnvironmentVoid" type="Node" parent="Window/Background"]
+unique_name_in_owner = true
+
+[node name="Environment2D" parent="Window/Background" instance=ExtResource("4_inthc")]
+unique_name_in_owner = true
+visible = false
+
+[node name="Environment3D" parent="Window/Background" instance=ExtResource("5_4t02t")]
+unique_name_in_owner = true
+visible = false
+
+[node name="CanvasLayer" type="CanvasLayer" parent="Window"]
+
+[node name="Content" type="MarginContainer" parent="Window/CanvasLayer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -155,35 +198,35 @@ theme_override_constants/margin_top = 16
 theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 16
 
-[node name="Layout" type="VBoxContainer" parent="Window/Content"]
+[node name="Layout" type="VBoxContainer" parent="Window/CanvasLayer/Content"]
 custom_minimum_size = Vector2(320, 0)
 layout_mode = 2
 theme_override_constants/separation = 16
 alignment = 1
 
-[node name="TextScaling" type="VBoxContainer" parent="Window/Content/Layout"]
+[node name="TextScaling" type="VBoxContainer" parent="Window/CanvasLayer/Content/Layout"]
 layout_mode = 2
 theme_override_constants/separation = 16
 
-[node name="Label" type="Label" parent="Window/Content/Layout/TextScaling"]
+[node name="Label" type="Label" parent="Window/CanvasLayer/Content/Layout/TextScaling"]
 layout_mode = 2
 text = "Text scaling"
 
-[node name="Split" type="ColorRect" parent="Window/Content/Layout/TextScaling"]
+[node name="Split" type="ColorRect" parent="Window/CanvasLayer/Content/Layout/TextScaling"]
 custom_minimum_size = Vector2(0, 2)
 layout_mode = 2
 
-[node name="TextPreview1" type="HBoxContainer" parent="Window/Content/Layout/TextScaling"]
+[node name="TextPreview1" type="HBoxContainer" parent="Window/CanvasLayer/Content/Layout/TextScaling"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Window/Content/Layout/TextScaling/TextPreview1"]
+[node name="Label" type="Label" parent="Window/CanvasLayer/Content/Layout/TextScaling/TextPreview1"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"InfoLabel"
 text = "40px"
 vertical_alignment = 1
 
-[node name="TextLabel40px" type="Label" parent="Window/Content/Layout/TextScaling/TextPreview1"]
+[node name="TextLabel40px" type="Label" parent="Window/CanvasLayer/Content/Layout/TextScaling/TextPreview1"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
@@ -193,17 +236,17 @@ horizontal_alignment = 1
 vertical_alignment = 1
 uppercase = true
 
-[node name="TextPreview2" type="HBoxContainer" parent="Window/Content/Layout/TextScaling"]
+[node name="TextPreview2" type="HBoxContainer" parent="Window/CanvasLayer/Content/Layout/TextScaling"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Window/Content/Layout/TextScaling/TextPreview2"]
+[node name="Label" type="Label" parent="Window/CanvasLayer/Content/Layout/TextScaling/TextPreview2"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"InfoLabel"
 text = "24px"
 vertical_alignment = 1
 
-[node name="TextLabel24px" type="Label" parent="Window/Content/Layout/TextScaling/TextPreview2"]
+[node name="TextLabel24px" type="Label" parent="Window/CanvasLayer/Content/Layout/TextScaling/TextPreview2"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
@@ -212,17 +255,17 @@ text = "Average label"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="TextPreview3" type="HBoxContainer" parent="Window/Content/Layout/TextScaling"]
+[node name="TextPreview3" type="HBoxContainer" parent="Window/CanvasLayer/Content/Layout/TextScaling"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Window/Content/Layout/TextScaling/TextPreview3"]
+[node name="Label" type="Label" parent="Window/CanvasLayer/Content/Layout/TextScaling/TextPreview3"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"InfoLabel"
 text = "10px"
 vertical_alignment = 1
 
-[node name="TextLabel10px" type="Label" parent="Window/Content/Layout/TextScaling/TextPreview3"]
+[node name="TextLabel10px" type="Label" parent="Window/CanvasLayer/Content/Layout/TextScaling/TextPreview3"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
@@ -231,33 +274,33 @@ text = "small label"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Split" type="ColorRect" parent="Window/Content/Layout"]
+[node name="Split" type="ColorRect" parent="Window/CanvasLayer/Content/Layout"]
 custom_minimum_size = Vector2(0, 4)
 layout_mode = 2
 
-[node name="TextureScaling" type="VBoxContainer" parent="Window/Content/Layout"]
+[node name="TextureScaling" type="VBoxContainer" parent="Window/CanvasLayer/Content/Layout"]
 layout_mode = 2
 theme_override_constants/separation = 16
 
-[node name="Label" type="Label" parent="Window/Content/Layout/TextureScaling"]
+[node name="Label" type="Label" parent="Window/CanvasLayer/Content/Layout/TextureScaling"]
 layout_mode = 2
 text = "Texture scaling (from 64x64 source)"
 
-[node name="Split" type="ColorRect" parent="Window/Content/Layout/TextureScaling"]
+[node name="Split" type="ColorRect" parent="Window/CanvasLayer/Content/Layout/TextureScaling"]
 custom_minimum_size = Vector2(0, 2)
 layout_mode = 2
 
-[node name="TexturePreview4" type="HBoxContainer" parent="Window/Content/Layout/TextureScaling"]
+[node name="TexturePreview4" type="HBoxContainer" parent="Window/CanvasLayer/Content/Layout/TextureScaling"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Window/Content/Layout/TextureScaling/TexturePreview4"]
+[node name="Label" type="Label" parent="Window/CanvasLayer/Content/Layout/TextureScaling/TexturePreview4"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"InfoLabel"
 text = "16x16"
 vertical_alignment = 1
 
-[node name="Texture16x16" type="TextureRect" parent="Window/Content/Layout/TextureScaling/TexturePreview4"]
+[node name="Texture16x16" type="TextureRect" parent="Window/CanvasLayer/Content/Layout/TextureScaling/TexturePreview4"]
 unique_name_in_owner = true
 texture_filter = 4
 custom_minimum_size = Vector2(16, 16)
@@ -267,17 +310,17 @@ texture = ExtResource("4_auj1r")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="TexturePreview1" type="HBoxContainer" parent="Window/Content/Layout/TextureScaling"]
+[node name="TexturePreview1" type="HBoxContainer" parent="Window/CanvasLayer/Content/Layout/TextureScaling"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Window/Content/Layout/TextureScaling/TexturePreview1"]
+[node name="Label" type="Label" parent="Window/CanvasLayer/Content/Layout/TextureScaling/TexturePreview1"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"InfoLabel"
 text = "32x32"
 vertical_alignment = 1
 
-[node name="Texture32x32" type="TextureRect" parent="Window/Content/Layout/TextureScaling/TexturePreview1"]
+[node name="Texture32x32" type="TextureRect" parent="Window/CanvasLayer/Content/Layout/TextureScaling/TexturePreview1"]
 unique_name_in_owner = true
 texture_filter = 4
 custom_minimum_size = Vector2(32, 32)
@@ -287,17 +330,17 @@ texture = ExtResource("4_auj1r")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="TexturePreview2" type="HBoxContainer" parent="Window/Content/Layout/TextureScaling"]
+[node name="TexturePreview2" type="HBoxContainer" parent="Window/CanvasLayer/Content/Layout/TextureScaling"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Window/Content/Layout/TextureScaling/TexturePreview2"]
+[node name="Label" type="Label" parent="Window/CanvasLayer/Content/Layout/TextureScaling/TexturePreview2"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"InfoLabel"
 text = "64x64"
 vertical_alignment = 1
 
-[node name="Texture64x64" type="TextureRect" parent="Window/Content/Layout/TextureScaling/TexturePreview2"]
+[node name="Texture64x64" type="TextureRect" parent="Window/CanvasLayer/Content/Layout/TextureScaling/TexturePreview2"]
 unique_name_in_owner = true
 texture_filter = 4
 custom_minimum_size = Vector2(64, 64)
@@ -307,17 +350,17 @@ texture = ExtResource("4_auj1r")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="TexturePreview3" type="HBoxContainer" parent="Window/Content/Layout/TextureScaling"]
+[node name="TexturePreview3" type="HBoxContainer" parent="Window/CanvasLayer/Content/Layout/TextureScaling"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Window/Content/Layout/TextureScaling/TexturePreview3"]
+[node name="Label" type="Label" parent="Window/CanvasLayer/Content/Layout/TextureScaling/TexturePreview3"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"InfoLabel"
 text = "128x128"
 vertical_alignment = 1
 
-[node name="Texture128x128" type="TextureRect" parent="Window/Content/Layout/TextureScaling/TexturePreview3"]
+[node name="Texture128x128" type="TextureRect" parent="Window/CanvasLayer/Content/Layout/TextureScaling/TexturePreview3"]
 unique_name_in_owner = true
 texture_filter = 4
 custom_minimum_size = Vector2(128, 128)

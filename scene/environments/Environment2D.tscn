@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=3 uid="uid://b0ujxspc3tcrn"]
+
+[ext_resource type="Texture2D" uid="uid://ctta2dry2npxy" path="res://icon.svg" id="1_unktp"]
+[ext_resource type="Script" path="res://scene/environments/Environment2D.gd" id="1_xxet6"]
+
+[node name="Environment2D" type="Node2D"]
+script = ExtResource("1_xxet6")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(176, 292)
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(105, 339)
+texture = ExtResource("1_unktp")
+
+[node name="Sprite2D2" type="Sprite2D" parent="."]
+position = Vector2(167, 211)
+texture = ExtResource("1_unktp")
+
+[node name="Sprite2D3" type="Sprite2D" parent="."]
+position = Vector2(263, 302)
+texture = ExtResource("1_unktp")
