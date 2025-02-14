@@ -1,0 +1,106 @@
+[gd_scene load_steps=5 format=3 uid="uid://c2ef4nyv2ebsy"]
+
+[ext_resource type="Script" path="res://Main.gd" id="1_r2ot1"]
+[ext_resource type="PackedScene" uid="uid://8mgnsraqnj2d" path="res://gui/SettingRow.tscn" id="2_i218e"]
+[ext_resource type="Script" path="res://scene/WindowScript.gd" id="3_h5uyj"]
+[ext_resource type="Texture2D" uid="uid://ctta2dry2npxy" path="res://icon.svg" id="4_auj1r"]
+
+[node name="Main" type="MarginContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 8
+script = ExtResource("1_r2ot1")
+
+[node name="Layout" type="VBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 18
+
+[node name="Title" type="Label" parent="Layout"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Configuration options"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ScaleFactorSetting" parent="Layout" instance=ExtResource("2_i218e")]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Content Scale Factor"
+options = Array[String](["50%", "75%", "100%", "125%", "150%", "200%"])
+
+[node name="Window" type="Window" parent="."]
+unique_name_in_owner = true
+title = "Demo"
+size = Vector2i(336, 416)
+visible = false
+wrap_controls = true
+unresizable = true
+script = ExtResource("3_h5uyj")
+
+[node name="Content" type="VBoxContainer" parent="Window"]
+custom_minimum_size = Vector2(320, 0)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="BigLabel" type="Label" parent="Window/Content"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 40
+text = "Big label"
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
+
+[node name="AverageLabel" type="Label" parent="Window/Content"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 24
+text = "Average label"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SmallLabel" type="Label" parent="Window/Content"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 10
+text = "small label"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Texture32x32" type="TextureRect" parent="Window/Content"]
+texture_filter = 4
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+size_flags_horizontal = 4
+texture = ExtResource("4_auj1r")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Texture64x64" type="TextureRect" parent="Window/Content"]
+texture_filter = 4
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+size_flags_horizontal = 4
+texture = ExtResource("4_auj1r")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Texture128x128" type="TextureRect" parent="Window/Content"]
+texture_filter = 4
+custom_minimum_size = Vector2(128, 128)
+layout_mode = 2
+size_flags_horizontal = 4
+texture = ExtResource("4_auj1r")
+expand_mode = 1
+stretch_mode = 5
