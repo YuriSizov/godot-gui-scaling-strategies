@@ -3,8 +3,8 @@
 [ext_resource type="Script" path="res://Main.gd" id="1_r2ot1"]
 [ext_resource type="PackedScene" uid="uid://8mgnsraqnj2d" path="res://gui/SettingRow.tscn" id="2_i218e"]
 [ext_resource type="Script" path="res://scene/WindowScript.gd" id="3_h5uyj"]
-[ext_resource type="Texture2D" uid="uid://ctta2dry2npxy" path="res://icon.svg" id="4_auj1r"]
 [ext_resource type="PackedScene" uid="uid://b0ujxspc3tcrn" path="res://scene/environments/Environment2D.tscn" id="4_inthc"]
+[ext_resource type="Texture2D" uid="uid://0d5kej8v1qg0" path="res://scene/assets/texture_1x.svg" id="5_1th6v"]
 [ext_resource type="PackedScene" uid="uid://c8dco853ln1y8" path="res://scene/environments/Environment3D.tscn" id="5_4t02t"]
 
 [node name="Main" type="MarginContainer"]
@@ -31,52 +31,174 @@ theme_override_constants/margin_right = 18
 [node name="Layout" type="VBoxContainer" parent="ScrollContainer/MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_constants/separation = 36
+
+[node name="ScalingSection" type="VBoxContainer" parent="ScrollContainer/MarginContainer/Layout"]
+layout_mode = 2
 theme_override_constants/separation = 18
 
-[node name="Title" type="Label" parent="ScrollContainer/MarginContainer/Layout"]
+[node name="Title" type="Label" parent="ScrollContainer/MarginContainer/Layout/ScalingSection"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
-text = "Configuration options"
+text = "Scaling options"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ScaleFactorSetting" parent="ScrollContainer/MarginContainer/Layout" instance=ExtResource("2_i218e")]
+[node name="ScaleTargetSetting" parent="ScrollContainer/MarginContainer/Layout/ScalingSection" instance=ExtResource("2_i218e")]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Content Scale Factor"
-options = Array[String](["50%", "75%", "100%", "125%", "150%", "200%"])
+text = "Scale Target"
+options = Array[String](["Control", "Window"])
 
-[node name="ScaleFactorExplanation" type="HBoxContainer" parent="ScrollContainer/MarginContainer/Layout"]
+[node name="ScaleTargetExplanation" type="HBoxContainer" parent="ScrollContainer/MarginContainer/Layout/ScalingSection"]
 layout_mode = 2
 
-[node name="Filler" type="Control" parent="ScrollContainer/MarginContainer/Layout/ScaleFactorExplanation"]
+[node name="Filler" type="Control" parent="ScrollContainer/MarginContainer/Layout/ScalingSection/ScaleTargetExplanation"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="ScrollContainer/MarginContainer/Layout/ScaleFactorExplanation"]
+[node name="Label" type="Label" parent="ScrollContainer/MarginContainer/Layout/ScalingSection/ScaleTargetExplanation"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 3.0
 theme_type_variation = &"ExplanationLabel"
-text = "Content scale factor is a property of the Window node. Basically, it applies extra scaling transformation for every screen element.
+text = "There are two superficially simple ways to scale UI in Godot. First is scaling the top-level control that houses your UI nodes. This is done via the scale property and has a benefit of being a well-isolate solution, only affecting the node and its descendants. On the flip side, this scaling method also affects the anchors of the control, which limits what anchoring options you can use without extra corrections done in scripts.
 
-For the most part it just works, however there is an engine bug with how scaling affects content minimum size calculations. See the WindowScript.gd file for more details."
+The second way is by using Window's content_scale_factor property. This is a great option for applications made in Godot, as it allows you to scale the whole UI from one place and in a way that doesn't break anchors. This comes with some limitations in games, though, as this property affects the entire window, and cannot be adjusted/disabled in sub-viewports or canvas layers. As such, the world camera needs to be adjusted to counteract this scale, if this is relevant.
+
+Either approach needs to be manually repeated for each sub-window."
 autowrap_mode = 2
 
-[node name="TextureScaleSetting" parent="ScrollContainer/MarginContainer/Layout" instance=ExtResource("2_i218e")]
+[node name="ScaleFactorSetting" parent="ScrollContainer/MarginContainer/Layout/ScalingSection" instance=ExtResource("2_i218e")]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Scale Factor"
+options = Array[String](["50%", "75%", "100%", "125%", "150%", "200%"])
+
+[node name="ScaleFactorExplanation" type="HBoxContainer" parent="ScrollContainer/MarginContainer/Layout/ScalingSection"]
+layout_mode = 2
+
+[node name="Filler" type="Control" parent="ScrollContainer/MarginContainer/Layout/ScalingSection/ScaleFactorExplanation"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="ScrollContainer/MarginContainer/Layout/ScalingSection/ScaleFactorExplanation"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 3.0
+theme_type_variation = &"ExplanationLabel"
+text = "When working with scale, it's important to account for every scaling level along the way. Different asset options (listed below) may work better at some scales but not others. There typically isn't one solution that fits all cases, and fine tuning, compromise, or smart on-the-fly adjustments are required.
+
+Make sure to compare everything at various scales."
+autowrap_mode = 2
+
+[node name="ResetSizeSetting" parent="ScrollContainer/MarginContainer/Layout/ScalingSection" instance=ExtResource("2_i218e")]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Reset Window Size"
+options = Array[String](["Off", "On"])
+
+[node name="ResetSizeExplanation" type="HBoxContainer" parent="ScrollContainer/MarginContainer/Layout/ScalingSection"]
+layout_mode = 2
+
+[node name="Filler" type="Control" parent="ScrollContainer/MarginContainer/Layout/ScalingSection/ResetSizeExplanation"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="ScrollContainer/MarginContainer/Layout/ScalingSection/ResetSizeExplanation"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 3.0
+theme_type_variation = &"ExplanationLabel"
+text = "This option enables a window size reset when other relevant options change. Enabling the reset allows to better understand how the minimum size changes based on the settings. Disabling it allows to visualize anchoring better."
+autowrap_mode = 2
+
+[node name="SceneSection" type="VBoxContainer" parent="ScrollContainer/MarginContainer/Layout"]
+layout_mode = 2
+theme_override_constants/separation = 18
+
+[node name="Title" type="Label" parent="ScrollContainer/MarginContainer/Layout/SceneSection"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Scene options"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AnchorSetting" parent="ScrollContainer/MarginContainer/Layout/SceneSection" instance=ExtResource("2_i218e")]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Control Anchor"
+options = Array[String](["Full Rect", "Top Left", "Center"])
+
+[node name="AnchorExplanation" type="HBoxContainer" parent="ScrollContainer/MarginContainer/Layout/SceneSection"]
+layout_mode = 2
+
+[node name="Filler" type="Control" parent="ScrollContainer/MarginContainer/Layout/SceneSection/AnchorExplanation"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="ScrollContainer/MarginContainer/Layout/SceneSection/AnchorExplanation"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 3.0
+theme_type_variation = &"ExplanationLabel"
+text = "When designing UI, whether it's menus or an in-game HUD, you want to have freedom to align elements to any place on the screen. Godot's anchoring system as well as a smart use of containers help with that by providing ways to align elements against any corner, side, center, or the entire window/screen.
+
+However, anchoring options don't always behave well with scaling mechanics. In fact, this project has to fix some things in the window size computations to address some of these issues. Other issues may not be possible to address from scripts, though.
+
+Check the WindowScript.gd file for more details."
+autowrap_mode = 2
+
+[node name="BackgroundSetting" parent="ScrollContainer/MarginContainer/Layout/SceneSection" instance=ExtResource("2_i218e")]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Background Environment"
+options = Array[String](["Void", "2D", "3D"])
+
+[node name="BackgroundExplanation" type="HBoxContainer" parent="ScrollContainer/MarginContainer/Layout/SceneSection"]
+layout_mode = 2
+
+[node name="Filler" type="Control" parent="ScrollContainer/MarginContainer/Layout/SceneSection/BackgroundExplanation"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="ScrollContainer/MarginContainer/Layout/SceneSection/BackgroundExplanation"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 3.0
+theme_type_variation = &"ExplanationLabel"
+text = "This option allows to preview approaches against 2D and 3D worlds, which can be informative for gamedev contexts. The Void option is basically a placeholder for the app dev context.
+
+When using Window-based scaling, 2D worlds are also directly affected by the scale factor. This is a major downside of that approach, but it can be worked around by adjusting the camera zoom in the direction opposite to the scale. If you actually need content scale strategies for your 2D game, this Window-based approach may also be not ideal.
+
+3D worlds are affected to a lesser degree. The camera resolution changes with the size of the window when the content scale factor is adjusted. Whether it is desirable or not is up to you and your project's needs. This can also be worked around from a script to fit your needs."
+autowrap_mode = 2
+
+[node name="AssetSection" type="VBoxContainer" parent="ScrollContainer/MarginContainer/Layout"]
+layout_mode = 2
+theme_override_constants/separation = 18
+
+[node name="Title" type="Label" parent="ScrollContainer/MarginContainer/Layout/AssetSection"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Asset options"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextureScaleSetting" parent="ScrollContainer/MarginContainer/Layout/AssetSection" instance=ExtResource("2_i218e")]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Texture: Import Scale"
 options = Array[String](["1x", "2x", "4x"])
 
-[node name="TextureScaleExplanation" type="HBoxContainer" parent="ScrollContainer/MarginContainer/Layout"]
+[node name="TextureScaleExplanation" type="HBoxContainer" parent="ScrollContainer/MarginContainer/Layout/AssetSection"]
 layout_mode = 2
 
-[node name="Filler" type="Control" parent="ScrollContainer/MarginContainer/Layout/TextureScaleExplanation"]
+[node name="Filler" type="Control" parent="ScrollContainer/MarginContainer/Layout/AssetSection/TextureScaleExplanation"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="ScrollContainer/MarginContainer/Layout/TextureScaleExplanation"]
+[node name="Label" type="Label" parent="ScrollContainer/MarginContainer/Layout/AssetSection/TextureScaleExplanation"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 3.0
@@ -86,20 +208,20 @@ text = "In this example, we're using SVG textures. This option affects the scale
 You can achieve same results with raster textures, like PNG. You will need to prepare them with the correct scale beforehand, though, using your image editing software of choice."
 autowrap_mode = 2
 
-[node name="TextureMipmapsSetting" parent="ScrollContainer/MarginContainer/Layout" instance=ExtResource("2_i218e")]
+[node name="TextureMipmapsSetting" parent="ScrollContainer/MarginContainer/Layout/AssetSection" instance=ExtResource("2_i218e")]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Texture: Use Mipmaps"
 options = Array[String](["Off", "On"])
 
-[node name="TextureMipmapsExplanation" type="HBoxContainer" parent="ScrollContainer/MarginContainer/Layout"]
+[node name="TextureMipmapsExplanation" type="HBoxContainer" parent="ScrollContainer/MarginContainer/Layout/AssetSection"]
 layout_mode = 2
 
-[node name="Filler" type="Control" parent="ScrollContainer/MarginContainer/Layout/TextureMipmapsExplanation"]
+[node name="Filler" type="Control" parent="ScrollContainer/MarginContainer/Layout/AssetSection/TextureMipmapsExplanation"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="ScrollContainer/MarginContainer/Layout/TextureMipmapsExplanation"]
+[node name="Label" type="Label" parent="ScrollContainer/MarginContainer/Layout/AssetSection/TextureMipmapsExplanation"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 3.0
@@ -109,20 +231,20 @@ text = "Mipmaps can be described as LOD for textures. When you increase the scal
 In this example, all textures are always imported with mipmapping enabled, but this is not the default. You must also enable mipmaps in texture filtering options, which is what this option does."
 autowrap_mode = 2
 
-[node name="FontScaleSetting" parent="ScrollContainer/MarginContainer/Layout" instance=ExtResource("2_i218e")]
+[node name="FontScaleSetting" parent="ScrollContainer/MarginContainer/Layout/AssetSection" instance=ExtResource("2_i218e")]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Font: Import Scale"
 options = Array[String](["Normal", "OS 2x", "OS 4x", "MSDF 24px", "MSDF 40px"])
 
-[node name="FontScaleExplanation" type="HBoxContainer" parent="ScrollContainer/MarginContainer/Layout"]
+[node name="FontScaleExplanation" type="HBoxContainer" parent="ScrollContainer/MarginContainer/Layout/AssetSection"]
 layout_mode = 2
 
-[node name="Filler" type="Control" parent="ScrollContainer/MarginContainer/Layout/FontScaleExplanation"]
+[node name="Filler" type="Control" parent="ScrollContainer/MarginContainer/Layout/AssetSection/FontScaleExplanation"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="ScrollContainer/MarginContainer/Layout/FontScaleExplanation"]
+[node name="Label" type="Label" parent="ScrollContainer/MarginContainer/Layout/AssetSection/FontScaleExplanation"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 3.0
@@ -136,31 +258,6 @@ text = "There are two main ways to work with scaling when it comes to fonts. Nei
 Note that fonts can sometimes be broken and require expensive processing to be fixed, an option that is not available in Godot and can lead to gaps and shape breaks, specifically caused by self-intersections."
 autowrap_mode = 2
 
-[node name="BackgroundSetting" parent="ScrollContainer/MarginContainer/Layout" instance=ExtResource("2_i218e")]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Background Environment"
-options = Array[String](["Void", "2D", "3D"])
-
-[node name="BackgroundExplanation" type="HBoxContainer" parent="ScrollContainer/MarginContainer/Layout"]
-layout_mode = 2
-
-[node name="Filler" type="Control" parent="ScrollContainer/MarginContainer/Layout/BackgroundExplanation"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="Label" type="Label" parent="ScrollContainer/MarginContainer/Layout/BackgroundExplanation"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_stretch_ratio = 3.0
-theme_type_variation = &"ExplanationLabel"
-text = "These approaches work well with GUI apps made in Godot. However, games are trickier. There is an unfortunate limitation that the content scale factor is only available on Window nodes, not just any Viewport. This makes it hard to mix this approach with scaling strategies needed by 2D and 3D games.
-
-The biggest issue to solve is going to be: how to react to artibtrary window size changes. In some environments this is an irrelevant question and sizes are fixed at a certain point. But on desktop this might require some consideration, or get in the way of using this approach all together.
-
-In this example the 2D environment is zoomed back and forth based on the content scale factor, as 2D visuals degrade once the scale is increased. This can be counteracted by making all your assets with a higher resolution, and then scaling it back accordingly. The 3D environment is less of an issue, as the scale directly affects the camera and not the world."
-autowrap_mode = 2
-
 [node name="Window" type="Window" parent="."]
 unique_name_in_owner = true
 disable_3d = true
@@ -169,7 +266,6 @@ title = "Demo"
 position = Vector2i(1235, 36)
 size = Vector2i(352, 634)
 wrap_controls = true
-unresizable = true
 script = ExtResource("3_h5uyj")
 
 [node name="Background" type="Node" parent="Window"]
@@ -185,9 +281,10 @@ visible = false
 unique_name_in_owner = true
 visible = false
 
-[node name="CanvasLayer" type="CanvasLayer" parent="Window"]
+[node name="UILayer" type="CanvasLayer" parent="Window"]
 
-[node name="Content" type="MarginContainer" parent="Window/CanvasLayer"]
+[node name="UIContent" type="MarginContainer" parent="Window/UILayer"]
+unique_name_in_owner = true
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -198,35 +295,35 @@ theme_override_constants/margin_top = 16
 theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 16
 
-[node name="Layout" type="VBoxContainer" parent="Window/CanvasLayer/Content"]
+[node name="Layout" type="VBoxContainer" parent="Window/UILayer/UIContent"]
 custom_minimum_size = Vector2(320, 0)
 layout_mode = 2
 theme_override_constants/separation = 16
 alignment = 1
 
-[node name="TextScaling" type="VBoxContainer" parent="Window/CanvasLayer/Content/Layout"]
+[node name="TextScaling" type="VBoxContainer" parent="Window/UILayer/UIContent/Layout"]
 layout_mode = 2
 theme_override_constants/separation = 16
 
-[node name="Label" type="Label" parent="Window/CanvasLayer/Content/Layout/TextScaling"]
+[node name="Label" type="Label" parent="Window/UILayer/UIContent/Layout/TextScaling"]
 layout_mode = 2
 text = "Text scaling"
 
-[node name="Split" type="ColorRect" parent="Window/CanvasLayer/Content/Layout/TextScaling"]
+[node name="Split" type="ColorRect" parent="Window/UILayer/UIContent/Layout/TextScaling"]
 custom_minimum_size = Vector2(0, 2)
 layout_mode = 2
 
-[node name="TextPreview1" type="HBoxContainer" parent="Window/CanvasLayer/Content/Layout/TextScaling"]
+[node name="TextPreview1" type="HBoxContainer" parent="Window/UILayer/UIContent/Layout/TextScaling"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Window/CanvasLayer/Content/Layout/TextScaling/TextPreview1"]
+[node name="Label" type="Label" parent="Window/UILayer/UIContent/Layout/TextScaling/TextPreview1"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"InfoLabel"
 text = "40px"
 vertical_alignment = 1
 
-[node name="TextLabel40px" type="Label" parent="Window/CanvasLayer/Content/Layout/TextScaling/TextPreview1"]
+[node name="TextLabel40px" type="Label" parent="Window/UILayer/UIContent/Layout/TextScaling/TextPreview1"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
@@ -236,17 +333,17 @@ horizontal_alignment = 1
 vertical_alignment = 1
 uppercase = true
 
-[node name="TextPreview2" type="HBoxContainer" parent="Window/CanvasLayer/Content/Layout/TextScaling"]
+[node name="TextPreview2" type="HBoxContainer" parent="Window/UILayer/UIContent/Layout/TextScaling"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Window/CanvasLayer/Content/Layout/TextScaling/TextPreview2"]
+[node name="Label" type="Label" parent="Window/UILayer/UIContent/Layout/TextScaling/TextPreview2"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"InfoLabel"
 text = "24px"
 vertical_alignment = 1
 
-[node name="TextLabel24px" type="Label" parent="Window/CanvasLayer/Content/Layout/TextScaling/TextPreview2"]
+[node name="TextLabel24px" type="Label" parent="Window/UILayer/UIContent/Layout/TextScaling/TextPreview2"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
@@ -255,17 +352,17 @@ text = "Average label"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="TextPreview3" type="HBoxContainer" parent="Window/CanvasLayer/Content/Layout/TextScaling"]
+[node name="TextPreview3" type="HBoxContainer" parent="Window/UILayer/UIContent/Layout/TextScaling"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Window/CanvasLayer/Content/Layout/TextScaling/TextPreview3"]
+[node name="Label" type="Label" parent="Window/UILayer/UIContent/Layout/TextScaling/TextPreview3"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"InfoLabel"
 text = "10px"
 vertical_alignment = 1
 
-[node name="TextLabel10px" type="Label" parent="Window/CanvasLayer/Content/Layout/TextScaling/TextPreview3"]
+[node name="TextLabel10px" type="Label" parent="Window/UILayer/UIContent/Layout/TextScaling/TextPreview3"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
@@ -274,98 +371,98 @@ text = "small label"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Split" type="ColorRect" parent="Window/CanvasLayer/Content/Layout"]
+[node name="Split" type="ColorRect" parent="Window/UILayer/UIContent/Layout"]
 custom_minimum_size = Vector2(0, 4)
 layout_mode = 2
 
-[node name="TextureScaling" type="VBoxContainer" parent="Window/CanvasLayer/Content/Layout"]
+[node name="TextureScaling" type="VBoxContainer" parent="Window/UILayer/UIContent/Layout"]
 layout_mode = 2
 theme_override_constants/separation = 16
 
-[node name="Label" type="Label" parent="Window/CanvasLayer/Content/Layout/TextureScaling"]
+[node name="Label" type="Label" parent="Window/UILayer/UIContent/Layout/TextureScaling"]
 layout_mode = 2
 text = "Texture scaling (from 64x64 source)"
 
-[node name="Split" type="ColorRect" parent="Window/CanvasLayer/Content/Layout/TextureScaling"]
+[node name="Split" type="ColorRect" parent="Window/UILayer/UIContent/Layout/TextureScaling"]
 custom_minimum_size = Vector2(0, 2)
 layout_mode = 2
 
-[node name="TexturePreview4" type="HBoxContainer" parent="Window/CanvasLayer/Content/Layout/TextureScaling"]
+[node name="TexturePreview4" type="HBoxContainer" parent="Window/UILayer/UIContent/Layout/TextureScaling"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Window/CanvasLayer/Content/Layout/TextureScaling/TexturePreview4"]
+[node name="Label" type="Label" parent="Window/UILayer/UIContent/Layout/TextureScaling/TexturePreview4"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"InfoLabel"
 text = "16x16"
 vertical_alignment = 1
 
-[node name="Texture16x16" type="TextureRect" parent="Window/CanvasLayer/Content/Layout/TextureScaling/TexturePreview4"]
+[node name="Texture16x16" type="TextureRect" parent="Window/UILayer/UIContent/Layout/TextureScaling/TexturePreview4"]
 unique_name_in_owner = true
 texture_filter = 4
 custom_minimum_size = Vector2(16, 16)
 layout_mode = 2
 size_flags_horizontal = 4
-texture = ExtResource("4_auj1r")
+texture = ExtResource("5_1th6v")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="TexturePreview1" type="HBoxContainer" parent="Window/CanvasLayer/Content/Layout/TextureScaling"]
+[node name="TexturePreview1" type="HBoxContainer" parent="Window/UILayer/UIContent/Layout/TextureScaling"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Window/CanvasLayer/Content/Layout/TextureScaling/TexturePreview1"]
+[node name="Label" type="Label" parent="Window/UILayer/UIContent/Layout/TextureScaling/TexturePreview1"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"InfoLabel"
 text = "32x32"
 vertical_alignment = 1
 
-[node name="Texture32x32" type="TextureRect" parent="Window/CanvasLayer/Content/Layout/TextureScaling/TexturePreview1"]
+[node name="Texture32x32" type="TextureRect" parent="Window/UILayer/UIContent/Layout/TextureScaling/TexturePreview1"]
 unique_name_in_owner = true
 texture_filter = 4
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
 size_flags_horizontal = 4
-texture = ExtResource("4_auj1r")
+texture = ExtResource("5_1th6v")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="TexturePreview2" type="HBoxContainer" parent="Window/CanvasLayer/Content/Layout/TextureScaling"]
+[node name="TexturePreview2" type="HBoxContainer" parent="Window/UILayer/UIContent/Layout/TextureScaling"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Window/CanvasLayer/Content/Layout/TextureScaling/TexturePreview2"]
+[node name="Label" type="Label" parent="Window/UILayer/UIContent/Layout/TextureScaling/TexturePreview2"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"InfoLabel"
 text = "64x64"
 vertical_alignment = 1
 
-[node name="Texture64x64" type="TextureRect" parent="Window/CanvasLayer/Content/Layout/TextureScaling/TexturePreview2"]
+[node name="Texture64x64" type="TextureRect" parent="Window/UILayer/UIContent/Layout/TextureScaling/TexturePreview2"]
 unique_name_in_owner = true
 texture_filter = 4
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
 size_flags_horizontal = 4
-texture = ExtResource("4_auj1r")
+texture = ExtResource("5_1th6v")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="TexturePreview3" type="HBoxContainer" parent="Window/CanvasLayer/Content/Layout/TextureScaling"]
+[node name="TexturePreview3" type="HBoxContainer" parent="Window/UILayer/UIContent/Layout/TextureScaling"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Window/CanvasLayer/Content/Layout/TextureScaling/TexturePreview3"]
+[node name="Label" type="Label" parent="Window/UILayer/UIContent/Layout/TextureScaling/TexturePreview3"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"InfoLabel"
 text = "128x128"
 vertical_alignment = 1
 
-[node name="Texture128x128" type="TextureRect" parent="Window/CanvasLayer/Content/Layout/TextureScaling/TexturePreview3"]
+[node name="Texture128x128" type="TextureRect" parent="Window/UILayer/UIContent/Layout/TextureScaling/TexturePreview3"]
 unique_name_in_owner = true
 texture_filter = 4
 custom_minimum_size = Vector2(128, 128)
 layout_mode = 2
 size_flags_horizontal = 4
-texture = ExtResource("4_auj1r")
+texture = ExtResource("5_1th6v")
 expand_mode = 1
 stretch_mode = 5
