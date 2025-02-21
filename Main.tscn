@@ -55,6 +55,7 @@ horizontal_scroll_mode = 0
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/margin_right = 18
+theme_override_constants/margin_bottom = 18
 
 [node name="Layout" type="VBoxContainer" parent="ScrollContainer/MarginContainer"]
 layout_mode = 2
@@ -174,7 +175,7 @@ text = "When designing UI, whether it's menus or an in-game HUD, you want to hav
 
 However, anchoring options don't always behave well with scaling mechanics. In fact, this project has to fix some things in the window size computations to address some of these issues. Other issues may not be possible to address from scripts, though.
 
-Check the WindowScript.gd file for more details."
+See the Window Fixes option below for more details."
 autowrap_mode = 2
 
 [node name="BackgroundSetting" parent="ScrollContainer/MarginContainer/Layout/SceneSection" instance=ExtResource("2_i218e")]
@@ -284,6 +285,42 @@ text = "There are two main ways to work with scaling when it comes to fonts. Nei
 - Multi-channel signed distance fields, or MSDF for short. This approach uses approximations based on signed distance fields, as the name suggests. This yields better scalable results, but can cause artifacts in glyphs, such as their shape and position on the line.
 
 Note that fonts can sometimes be broken and require expensive processing to be fixed, an option that is not available in Godot and can lead to gaps and shape breaks, specifically caused by self-intersections."
+autowrap_mode = 2
+
+[node name="ExtraSection" type="VBoxContainer" parent="ScrollContainer/MarginContainer/Layout"]
+layout_mode = 2
+theme_override_constants/separation = 18
+
+[node name="Title" type="Label" parent="ScrollContainer/MarginContainer/Layout/ExtraSection"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Extra options"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="WindowFixesSetting" parent="ScrollContainer/MarginContainer/Layout/ExtraSection" instance=ExtResource("2_i218e")]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Window Fixes"
+options = Array[String](["Off", "On"])
+
+[node name="WindowFixesExplanation" type="HBoxContainer" parent="ScrollContainer/MarginContainer/Layout/ExtraSection"]
+layout_mode = 2
+
+[node name="Filler" type="Control" parent="ScrollContainer/MarginContainer/Layout/ExtraSection/WindowFixesExplanation"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="ScrollContainer/MarginContainer/Layout/ExtraSection/WindowFixesExplanation"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 3.0
+theme_type_variation = &"ExplanationLabel"
+text = "By default Window doesn't account for scale changes when calculating its minimum size. In some situations this may be the desirable behavior where excessive content size leads to overflow. However, in apps this is definitely not the expected behavior. To address a few issues with minimum size computations this example includes a custom Window script. For comparison, it can be disabled by this option.
+
+Note: When these fixes are disable a different custom Window script is applied to emulate the default behavior. This is done to address some specificities of this demo project and multiple permutations of options that it tries to demonstrate. The emulated behavior is not perfect, but it's close enough. If you plan to use any of the strategies demonstrated in this example, it's expected that you'd want to apply the fixes regardless.
+
+Check the WindowScript.gd file for an explanation of the issues and the applied workaround."
 autowrap_mode = 2
 
 [node name="Window" type="Window" parent="."]

@@ -54,6 +54,14 @@ const FONT_SCALE_OPTIONS: Array[FontFile] = [
 ]
 const FONT_SCALE_DEFAULT := 0
 
+# Extra options.
+
+const WINDOW_FIXES_OPTIONS: Array[Script] = [
+	preload("res://scene/WindowScriptUnfixed.gd"),
+	preload("res://scene/WindowScript.gd"),
+]
+const WINDOW_FIXES_DEFAULT := 1
+
 const PRESENTATION_SPACING := 20.0
 
 # Configuration.
@@ -68,6 +76,8 @@ const PRESENTATION_SPACING := 20.0
 @onready var _texture_scale_setting: SettingRow = %TextureScaleSetting
 @onready var _texture_mipmaps_setting: SettingRow = %TextureMipmapsSetting
 @onready var _font_scale_setting: SettingRow = %FontScaleSetting
+
+@onready var _window_fixes_setting: SettingRow = %WindowFixesSetting
 
 # Content.
 
@@ -111,6 +121,9 @@ func _ready() -> void:
 	_texture_mipmaps_setting.selection_changed.connect(_update_texture_mipmaps)
 	_font_scale_setting.set_selected_option(FONT_SCALE_DEFAULT)
 	_font_scale_setting.selection_changed.connect(_update_font_scale)
+
+	_window_fixes_setting.set_selected_option(WINDOW_FIXES_DEFAULT)
+	_window_fixes_setting.selection_changed.connect(_update_window_fixes)
 
 	_window.popup_centered()
 	_spread_windows()
@@ -257,3 +270,18 @@ func _update_font_scale() -> void:
 	_builtin_spinbox_control.get_line_edit().add_theme_font_override("font", scaled_font)
 	_builtin_button_control.add_theme_font_override("font", scaled_font)
 	_builtin_checkbutton_control.add_theme_font_override("font", scaled_font)
+
+
+func _update_window_fixes() -> void:
+	var window_fixes_idx := _window_fixes_setting.get_selected_option()
+	var window_script := WINDOW_FIXES_OPTIONS[WINDOW_FIXES_DEFAULT]
+	if window_fixes_idx >= 0:
+		window_script = WINDOW_FIXES_OPTIONS[window_fixes_idx]
+
+	_window.set_script(window_script)
+
+	# Reset the size.
+	if _get_reset_size():
+		_window.size = Vector2.ZERO
+	else:
+		_window.child_controls_changed()

@@ -44,6 +44,8 @@ func _get_contents_minimum_size() -> Vector2:
 # a.k.a. Vector2.ZERO, a.k.a. the top-left corner of the window.
 
 func _get_control_minimum_size_with_offset(control: Control) -> Vector2:
+	# In the engine code invisible controls are also included in
+	# the computation, but that doesn't seem correct.
 	if not control.visible:
 		return Vector2.ZERO
 
@@ -60,6 +62,9 @@ func _get_control_minimum_size_with_offset(control: Control) -> Vector2:
 # in 2D games where the UI might be affected by the camera otherwise.
 
 func _get_canvas_layer_minimum_size(canvas_layer: CanvasLayer) -> Vector2:
+	if not canvas_layer.visible:
+		return Vector2.ZERO
+
 	var content_min_size := Vector2.ZERO
 
 	for child in canvas_layer.get_children():
