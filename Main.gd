@@ -86,6 +86,10 @@ const PRESENTATION_SPACING := 20.0
 @onready var _text_label_24px: Label = %TextLabel24px
 @onready var _text_label_10px: Label = %TextLabel10px
 
+@onready var _builtin_spinbox_control: SpinBox = %BuiltinSpinBox
+@onready var _builtin_button_control: Button = %BuiltinButton
+@onready var _builtin_checkbutton_control: CheckButton = %BuiltinCheckButton
+
 
 func _ready() -> void:
 	_apply_configuration()
@@ -221,6 +225,8 @@ func _update_texture_scale() -> void:
 	_texture_64x64.texture = scaled_texture
 	_texture_128x128.texture = scaled_texture
 
+	_builtin_button_control.icon = scaled_texture
+
 
 func _update_texture_mipmaps() -> void:
 	var use_mipmaps_idx := _texture_mipmaps_setting.get_selected_option()
@@ -228,10 +234,14 @@ func _update_texture_mipmaps() -> void:
 	if use_mipmaps_idx >= 0:
 		use_mipmaps = TEXTURE_MIPMAPS_OPTIONS[use_mipmaps_idx]
 
-	_texture_16x16.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS_ANISOTROPIC if use_mipmaps else CanvasItem.TEXTURE_FILTER_LINEAR
-	_texture_32x32.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS_ANISOTROPIC if use_mipmaps else CanvasItem.TEXTURE_FILTER_LINEAR
-	_texture_64x64.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS_ANISOTROPIC if use_mipmaps else CanvasItem.TEXTURE_FILTER_LINEAR
-	_texture_128x128.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS_ANISOTROPIC if use_mipmaps else CanvasItem.TEXTURE_FILTER_LINEAR
+	var texture_filter_value := CanvasItem.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS_ANISOTROPIC if use_mipmaps else CanvasItem.TEXTURE_FILTER_LINEAR
+
+	_texture_16x16.texture_filter = texture_filter_value
+	_texture_32x32.texture_filter = texture_filter_value
+	_texture_64x64.texture_filter = texture_filter_value
+	_texture_128x128.texture_filter = texture_filter_value
+
+	_builtin_button_control.texture_filter = texture_filter_value
 
 
 func _update_font_scale() -> void:
@@ -243,3 +253,7 @@ func _update_font_scale() -> void:
 	_text_label_40px.add_theme_font_override("font", scaled_font)
 	_text_label_24px.add_theme_font_override("font", scaled_font)
 	_text_label_10px.add_theme_font_override("font", scaled_font)
+
+	_builtin_spinbox_control.get_line_edit().add_theme_font_override("font", scaled_font)
+	_builtin_button_control.add_theme_font_override("font", scaled_font)
+	_builtin_checkbutton_control.add_theme_font_override("font", scaled_font)

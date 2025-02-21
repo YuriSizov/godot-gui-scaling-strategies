@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://c2ef4nyv2ebsy"]
+[gd_scene load_steps=10 format=3 uid="uid://c2ef4nyv2ebsy"]
 
 [ext_resource type="Script" path="res://Main.gd" id="1_r2ot1"]
 [ext_resource type="PackedScene" uid="uid://8mgnsraqnj2d" path="res://gui/SettingRow.tscn" id="2_i218e"]
@@ -6,6 +6,34 @@
 [ext_resource type="PackedScene" uid="uid://b0ujxspc3tcrn" path="res://scene/environments/Environment2D.tscn" id="4_inthc"]
 [ext_resource type="Texture2D" uid="uid://0d5kej8v1qg0" path="res://scene/assets/texture_1x.svg" id="5_1th6v"]
 [ext_resource type="PackedScene" uid="uid://c8dco853ln1y8" path="res://scene/environments/Environment3D.tscn" id="5_4t02t"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a5bbp"]
+bg_color = Color(1, 0.247351, 0.652822, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 4
+corner_radius_bottom_left = 36
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w3ovv"]
+bg_color = Color(1, 0.247059, 0.65098, 0)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(1, 0.247059, 0.65098, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 4
+corner_radius_bottom_left = 36
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4csrp"]
+bg_color = Color(1, 0.247059, 0.65098, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 4
+corner_radius_bottom_left = 36
 
 [node name="Main" type="MarginContainer"]
 anchors_preset = 15
@@ -263,8 +291,8 @@ unique_name_in_owner = true
 disable_3d = true
 gui_embed_subwindows = true
 title = "Demo"
-position = Vector2i(1235, 36)
-size = Vector2i(352, 634)
+position = Vector2i(993, 36)
+size = Vector2i(702, 634)
 wrap_controls = true
 script = ExtResource("3_h5uyj")
 
@@ -295,35 +323,39 @@ theme_override_constants/margin_top = 16
 theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 16
 
-[node name="Layout" type="VBoxContainer" parent="Window/UILayer/UIContent"]
+[node name="Layout" type="HBoxContainer" parent="Window/UILayer/UIContent"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Column1" type="VBoxContainer" parent="Window/UILayer/UIContent/Layout"]
 custom_minimum_size = Vector2(320, 0)
 layout_mode = 2
+size_flags_horizontal = 3
 theme_override_constants/separation = 16
-alignment = 1
 
-[node name="TextScaling" type="VBoxContainer" parent="Window/UILayer/UIContent/Layout"]
+[node name="TextScaling" type="VBoxContainer" parent="Window/UILayer/UIContent/Layout/Column1"]
 layout_mode = 2
 theme_override_constants/separation = 16
 
-[node name="Label" type="Label" parent="Window/UILayer/UIContent/Layout/TextScaling"]
+[node name="Label" type="Label" parent="Window/UILayer/UIContent/Layout/Column1/TextScaling"]
 layout_mode = 2
 text = "Text scaling"
 
-[node name="Split" type="ColorRect" parent="Window/UILayer/UIContent/Layout/TextScaling"]
+[node name="Split" type="ColorRect" parent="Window/UILayer/UIContent/Layout/Column1/TextScaling"]
 custom_minimum_size = Vector2(0, 2)
 layout_mode = 2
 
-[node name="TextPreview1" type="HBoxContainer" parent="Window/UILayer/UIContent/Layout/TextScaling"]
+[node name="TextPreview1" type="HBoxContainer" parent="Window/UILayer/UIContent/Layout/Column1/TextScaling"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Window/UILayer/UIContent/Layout/TextScaling/TextPreview1"]
+[node name="Label" type="Label" parent="Window/UILayer/UIContent/Layout/Column1/TextScaling/TextPreview1"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"InfoLabel"
 text = "40px"
 vertical_alignment = 1
 
-[node name="TextLabel40px" type="Label" parent="Window/UILayer/UIContent/Layout/TextScaling/TextPreview1"]
+[node name="TextLabel40px" type="Label" parent="Window/UILayer/UIContent/Layout/Column1/TextScaling/TextPreview1"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
@@ -333,17 +365,17 @@ horizontal_alignment = 1
 vertical_alignment = 1
 uppercase = true
 
-[node name="TextPreview2" type="HBoxContainer" parent="Window/UILayer/UIContent/Layout/TextScaling"]
+[node name="TextPreview2" type="HBoxContainer" parent="Window/UILayer/UIContent/Layout/Column1/TextScaling"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Window/UILayer/UIContent/Layout/TextScaling/TextPreview2"]
+[node name="Label" type="Label" parent="Window/UILayer/UIContent/Layout/Column1/TextScaling/TextPreview2"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"InfoLabel"
 text = "24px"
 vertical_alignment = 1
 
-[node name="TextLabel24px" type="Label" parent="Window/UILayer/UIContent/Layout/TextScaling/TextPreview2"]
+[node name="TextLabel24px" type="Label" parent="Window/UILayer/UIContent/Layout/Column1/TextScaling/TextPreview2"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
@@ -352,17 +384,17 @@ text = "Average label"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="TextPreview3" type="HBoxContainer" parent="Window/UILayer/UIContent/Layout/TextScaling"]
+[node name="TextPreview3" type="HBoxContainer" parent="Window/UILayer/UIContent/Layout/Column1/TextScaling"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Window/UILayer/UIContent/Layout/TextScaling/TextPreview3"]
+[node name="Label" type="Label" parent="Window/UILayer/UIContent/Layout/Column1/TextScaling/TextPreview3"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"InfoLabel"
 text = "10px"
 vertical_alignment = 1
 
-[node name="TextLabel10px" type="Label" parent="Window/UILayer/UIContent/Layout/TextScaling/TextPreview3"]
+[node name="TextLabel10px" type="Label" parent="Window/UILayer/UIContent/Layout/Column1/TextScaling/TextPreview3"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
@@ -371,33 +403,33 @@ text = "small label"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Split" type="ColorRect" parent="Window/UILayer/UIContent/Layout"]
+[node name="Split" type="ColorRect" parent="Window/UILayer/UIContent/Layout/Column1"]
 custom_minimum_size = Vector2(0, 4)
 layout_mode = 2
 
-[node name="TextureScaling" type="VBoxContainer" parent="Window/UILayer/UIContent/Layout"]
+[node name="TextureScaling" type="VBoxContainer" parent="Window/UILayer/UIContent/Layout/Column1"]
 layout_mode = 2
 theme_override_constants/separation = 16
 
-[node name="Label" type="Label" parent="Window/UILayer/UIContent/Layout/TextureScaling"]
+[node name="Label" type="Label" parent="Window/UILayer/UIContent/Layout/Column1/TextureScaling"]
 layout_mode = 2
 text = "Texture scaling (from 64x64 source)"
 
-[node name="Split" type="ColorRect" parent="Window/UILayer/UIContent/Layout/TextureScaling"]
+[node name="Split" type="ColorRect" parent="Window/UILayer/UIContent/Layout/Column1/TextureScaling"]
 custom_minimum_size = Vector2(0, 2)
 layout_mode = 2
 
-[node name="TexturePreview4" type="HBoxContainer" parent="Window/UILayer/UIContent/Layout/TextureScaling"]
+[node name="TexturePreview4" type="HBoxContainer" parent="Window/UILayer/UIContent/Layout/Column1/TextureScaling"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Window/UILayer/UIContent/Layout/TextureScaling/TexturePreview4"]
+[node name="Label" type="Label" parent="Window/UILayer/UIContent/Layout/Column1/TextureScaling/TexturePreview4"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"InfoLabel"
 text = "16x16"
 vertical_alignment = 1
 
-[node name="Texture16x16" type="TextureRect" parent="Window/UILayer/UIContent/Layout/TextureScaling/TexturePreview4"]
+[node name="Texture16x16" type="TextureRect" parent="Window/UILayer/UIContent/Layout/Column1/TextureScaling/TexturePreview4"]
 unique_name_in_owner = true
 texture_filter = 4
 custom_minimum_size = Vector2(16, 16)
@@ -407,17 +439,17 @@ texture = ExtResource("5_1th6v")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="TexturePreview1" type="HBoxContainer" parent="Window/UILayer/UIContent/Layout/TextureScaling"]
+[node name="TexturePreview1" type="HBoxContainer" parent="Window/UILayer/UIContent/Layout/Column1/TextureScaling"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Window/UILayer/UIContent/Layout/TextureScaling/TexturePreview1"]
+[node name="Label" type="Label" parent="Window/UILayer/UIContent/Layout/Column1/TextureScaling/TexturePreview1"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"InfoLabel"
 text = "32x32"
 vertical_alignment = 1
 
-[node name="Texture32x32" type="TextureRect" parent="Window/UILayer/UIContent/Layout/TextureScaling/TexturePreview1"]
+[node name="Texture32x32" type="TextureRect" parent="Window/UILayer/UIContent/Layout/Column1/TextureScaling/TexturePreview1"]
 unique_name_in_owner = true
 texture_filter = 4
 custom_minimum_size = Vector2(32, 32)
@@ -427,17 +459,17 @@ texture = ExtResource("5_1th6v")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="TexturePreview2" type="HBoxContainer" parent="Window/UILayer/UIContent/Layout/TextureScaling"]
+[node name="TexturePreview2" type="HBoxContainer" parent="Window/UILayer/UIContent/Layout/Column1/TextureScaling"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Window/UILayer/UIContent/Layout/TextureScaling/TexturePreview2"]
+[node name="Label" type="Label" parent="Window/UILayer/UIContent/Layout/Column1/TextureScaling/TexturePreview2"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"InfoLabel"
 text = "64x64"
 vertical_alignment = 1
 
-[node name="Texture64x64" type="TextureRect" parent="Window/UILayer/UIContent/Layout/TextureScaling/TexturePreview2"]
+[node name="Texture64x64" type="TextureRect" parent="Window/UILayer/UIContent/Layout/Column1/TextureScaling/TexturePreview2"]
 unique_name_in_owner = true
 texture_filter = 4
 custom_minimum_size = Vector2(64, 64)
@@ -447,17 +479,17 @@ texture = ExtResource("5_1th6v")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="TexturePreview3" type="HBoxContainer" parent="Window/UILayer/UIContent/Layout/TextureScaling"]
+[node name="TexturePreview3" type="HBoxContainer" parent="Window/UILayer/UIContent/Layout/Column1/TextureScaling"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Window/UILayer/UIContent/Layout/TextureScaling/TexturePreview3"]
+[node name="Label" type="Label" parent="Window/UILayer/UIContent/Layout/Column1/TextureScaling/TexturePreview3"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"InfoLabel"
 text = "128x128"
 vertical_alignment = 1
 
-[node name="Texture128x128" type="TextureRect" parent="Window/UILayer/UIContent/Layout/TextureScaling/TexturePreview3"]
+[node name="Texture128x128" type="TextureRect" parent="Window/UILayer/UIContent/Layout/Column1/TextureScaling/TexturePreview3"]
 unique_name_in_owner = true
 texture_filter = 4
 custom_minimum_size = Vector2(128, 128)
@@ -466,3 +498,126 @@ size_flags_horizontal = 4
 texture = ExtResource("5_1th6v")
 expand_mode = 1
 stretch_mode = 5
+
+[node name="Column2" type="VBoxContainer" parent="Window/UILayer/UIContent/Layout"]
+custom_minimum_size = Vector2(320, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Styleboxes" type="VBoxContainer" parent="Window/UILayer/UIContent/Layout/Column2"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Label" type="Label" parent="Window/UILayer/UIContent/Layout/Column2/Styleboxes"]
+layout_mode = 2
+text = "Stylebox scaling"
+
+[node name="Split" type="ColorRect" parent="Window/UILayer/UIContent/Layout/Column2/Styleboxes"]
+custom_minimum_size = Vector2(0, 2)
+layout_mode = 2
+
+[node name="StyleboxPreview1" type="HBoxContainer" parent="Window/UILayer/UIContent/Layout/Column2/Styleboxes"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Window/UILayer/UIContent/Layout/Column2/Styleboxes/StyleboxPreview1"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"InfoLabel"
+text = "Flat Filled"
+vertical_alignment = 1
+
+[node name="StyleboxFlatPanel" type="Panel" parent="Window/UILayer/UIContent/Layout/Column2/Styleboxes/StyleboxPreview1"]
+custom_minimum_size = Vector2(90, 90)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_a5bbp")
+
+[node name="StyleboxPreview2" type="HBoxContainer" parent="Window/UILayer/UIContent/Layout/Column2/Styleboxes"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Window/UILayer/UIContent/Layout/Column2/Styleboxes/StyleboxPreview2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"InfoLabel"
+text = "Flat Border"
+vertical_alignment = 1
+
+[node name="StyleboxFlatPanel" type="Panel" parent="Window/UILayer/UIContent/Layout/Column2/Styleboxes/StyleboxPreview2"]
+custom_minimum_size = Vector2(90, 90)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_w3ovv")
+
+[node name="StyleboxPreview3" type="HBoxContainer" parent="Window/UILayer/UIContent/Layout/Column2/Styleboxes"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Window/UILayer/UIContent/Layout/Column2/Styleboxes/StyleboxPreview3"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"InfoLabel"
+text = "Flat Combined"
+vertical_alignment = 1
+
+[node name="StyleboxFlatPanel" type="Panel" parent="Window/UILayer/UIContent/Layout/Column2/Styleboxes/StyleboxPreview3"]
+custom_minimum_size = Vector2(90, 90)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_4csrp")
+
+[node name="BuiltinUI" type="VBoxContainer" parent="Window/UILayer/UIContent/Layout/Column2"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Label" type="Label" parent="Window/UILayer/UIContent/Layout/Column2/BuiltinUI"]
+layout_mode = 2
+text = "Built-in UI scaling"
+
+[node name="Split" type="ColorRect" parent="Window/UILayer/UIContent/Layout/Column2/BuiltinUI"]
+custom_minimum_size = Vector2(0, 2)
+layout_mode = 2
+
+[node name="BuiltinPreview1" type="HBoxContainer" parent="Window/UILayer/UIContent/Layout/Column2/BuiltinUI"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Window/UILayer/UIContent/Layout/Column2/BuiltinUI/BuiltinPreview1"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"InfoLabel"
+text = "SpinBox"
+vertical_alignment = 1
+
+[node name="BuiltinSpinBox" type="SpinBox" parent="Window/UILayer/UIContent/Layout/Column2/BuiltinUI/BuiltinPreview1"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="BuiltinPreview2" type="HBoxContainer" parent="Window/UILayer/UIContent/Layout/Column2/BuiltinUI"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Window/UILayer/UIContent/Layout/Column2/BuiltinUI/BuiltinPreview2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"InfoLabel"
+text = "Button"
+vertical_alignment = 1
+
+[node name="BuiltinButton" type="Button" parent="Window/UILayer/UIContent/Layout/Column2/BuiltinUI/BuiltinPreview2"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(140, 0)
+layout_mode = 2
+theme_override_constants/h_separation = 8
+theme_override_constants/icon_max_width = 24
+text = "Press Me"
+icon = ExtResource("5_1th6v")
+
+[node name="BuiltinPreview3" type="HBoxContainer" parent="Window/UILayer/UIContent/Layout/Column2/BuiltinUI"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Window/UILayer/UIContent/Layout/Column2/BuiltinUI/BuiltinPreview3"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"InfoLabel"
+text = "CheckButton"
+vertical_alignment = 1
+
+[node name="BuiltinCheckButton" type="CheckButton" parent="Window/UILayer/UIContent/Layout/Column2/BuiltinUI/BuiltinPreview3"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(140, 0)
+layout_mode = 2
+text = "Toggle Me"
