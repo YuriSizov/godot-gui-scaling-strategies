@@ -40,10 +40,23 @@ const TEXTURE_SCALE_OPTIONS: Array[Texture2D] = [
 	preload("res://scene/assets/texture_2x.svg"),
 	preload("res://scene/assets/texture_4x.svg"),
 ]
+const TEXTURE_SCALE_CHECKBUTTON_OPTIONS: Array[Texture2D] = [
+	preload("res://scene/assets/checkbutton_unchecked_1x.svg"), preload("res://scene/assets/checkbutton_checked_1x.svg"),
+	preload("res://scene/assets/checkbutton_unchecked_2x.svg"), preload("res://scene/assets/checkbutton_checked_2x.svg"),
+	preload("res://scene/assets/checkbutton_unchecked_4x.svg"), preload("res://scene/assets/checkbutton_checked_4x.svg"),
+]
+const TEXTURE_SCALE_SPINBOX_OPTIONS: Array[Texture2D] = [
+	preload("res://scene/assets/spinbox_updown_1x.svg"),
+	preload("res://scene/assets/spinbox_updown_2x.svg"),
+	preload("res://scene/assets/spinbox_updown_4x.svg"),
+]
 const TEXTURE_SCALE_DEFAULT := 0
 
 const TEXTURE_MIPMAPS_OPTIONS: Array[bool] = [ false, true ]
 const TEXTURE_MIPMAPS_DEFAULT := 0
+
+const TEXTURE_SCRIPTED_OPTIONS: Array[bool] = [ false, true ]
+const TEXTURE_SCRIPTED_DEFAULT := 0
 
 const FONT_SCALE_OPTIONS: Array[FontFile] = [
 	preload("res://scene/assets/font_normal.ttf"),
@@ -75,6 +88,7 @@ const PRESENTATION_SPACING := 20.0
 
 @onready var _texture_scale_setting: SettingRow = %TextureScaleSetting
 @onready var _texture_mipmaps_setting: SettingRow = %TextureMipmapsSetting
+@onready var _texture_scripted_setting: SettingRow = %TextureScriptedSetting
 @onready var _font_scale_setting: SettingRow = %FontScaleSetting
 
 @onready var _window_fixes_setting: SettingRow = %WindowFixesSetting
@@ -119,6 +133,8 @@ func _ready() -> void:
 	_texture_scale_setting.selection_changed.connect(_update_texture_scale)
 	_texture_mipmaps_setting.set_selected_option(TEXTURE_MIPMAPS_DEFAULT)
 	_texture_mipmaps_setting.selection_changed.connect(_update_texture_mipmaps)
+	_texture_scripted_setting.set_selected_option(TEXTURE_SCRIPTED_DEFAULT)
+	_texture_scripted_setting.selection_changed.connect(_update_texture_scale)
 	_font_scale_setting.set_selected_option(FONT_SCALE_DEFAULT)
 	_font_scale_setting.selection_changed.connect(_update_font_scale)
 
@@ -229,9 +245,20 @@ func _update_scale_factor() -> void:
 
 func _update_texture_scale() -> void:
 	var texture_scale_idx := _texture_scale_setting.get_selected_option()
+
 	var scaled_texture := TEXTURE_SCALE_OPTIONS[TEXTURE_SCALE_DEFAULT]
 	if texture_scale_idx >= 0:
 		scaled_texture = TEXTURE_SCALE_OPTIONS[texture_scale_idx]
+
+	var scaled_checkbutton_texture_unchecked := TEXTURE_SCALE_CHECKBUTTON_OPTIONS[2 * TEXTURE_SCALE_DEFAULT]
+	var scaled_checkbutton_texture_checked := TEXTURE_SCALE_CHECKBUTTON_OPTIONS[2 * TEXTURE_SCALE_DEFAULT + 1]
+	if texture_scale_idx >= 0:
+		scaled_checkbutton_texture_unchecked = TEXTURE_SCALE_CHECKBUTTON_OPTIONS[2 * texture_scale_idx]
+		scaled_checkbutton_texture_checked = TEXTURE_SCALE_CHECKBUTTON_OPTIONS[2 * texture_scale_idx + 1]
+
+	var scaled_spinbox_texture := TEXTURE_SCALE_SPINBOX_OPTIONS[TEXTURE_SCALE_DEFAULT]
+	if texture_scale_idx >= 0:
+		scaled_spinbox_texture = TEXTURE_SCALE_SPINBOX_OPTIONS[texture_scale_idx]
 
 	_texture_16x16.texture = scaled_texture
 	_texture_32x32.texture = scaled_texture
@@ -239,6 +266,34 @@ func _update_texture_scale() -> void:
 	_texture_128x128.texture = scaled_texture
 
 	_builtin_button_control.icon = scaled_texture
+
+	# Use a custom texture type for theme properties.
+
+	var use_scripted_idx := _texture_scripted_setting.get_selected_option()
+	var use_scripted := TEXTURE_SCRIPTED_OPTIONS[TEXTURE_SCRIPTED_DEFAULT]
+	if use_scripted_idx >= 0:
+		use_scripted = TEXTURE_SCRIPTED_OPTIONS[use_scripted_idx]
+
+	if use_scripted:
+		var scaled_spinbox_texture_scr := ScaledTexture.new()
+		scaled_spinbox_texture_scr.texture = scaled_spinbox_texture
+		scaled_spinbox_texture_scr.target_size = TEXTURE_SCALE_SPINBOX_OPTIONS[0].get_size()
+
+		var scaled_checkbutton_texture_unchecked_scr := ScaledTexture.new()
+		scaled_checkbutton_texture_unchecked_scr.texture = scaled_checkbutton_texture_unchecked
+		scaled_checkbutton_texture_unchecked_scr.target_size = TEXTURE_SCALE_CHECKBUTTON_OPTIONS[0].get_size()
+
+		var scaled_checkbutton_texture_checked_scr := ScaledTexture.new()
+		scaled_checkbutton_texture_checked_scr.texture = scaled_checkbutton_texture_checked
+		scaled_checkbutton_texture_checked_scr.target_size = TEXTURE_SCALE_CHECKBUTTON_OPTIONS[1].get_size()
+
+		_builtin_spinbox_control.add_theme_icon_override("updown", scaled_spinbox_texture_scr)
+		_builtin_checkbutton_control.add_theme_icon_override("unchecked", scaled_checkbutton_texture_unchecked_scr)
+		_builtin_checkbutton_control.add_theme_icon_override("checked", scaled_checkbutton_texture_checked_scr)
+	else:
+		_builtin_spinbox_control.add_theme_icon_override("updown", scaled_spinbox_texture)
+		_builtin_checkbutton_control.add_theme_icon_override("unchecked", scaled_checkbutton_texture_unchecked)
+		_builtin_checkbutton_control.add_theme_icon_override("checked", scaled_checkbutton_texture_checked)
 
 
 func _update_texture_mipmaps() -> void:
@@ -254,7 +309,9 @@ func _update_texture_mipmaps() -> void:
 	_texture_64x64.texture_filter = texture_filter_value
 	_texture_128x128.texture_filter = texture_filter_value
 
+	_builtin_spinbox_control.texture_filter = texture_filter_value
 	_builtin_button_control.texture_filter = texture_filter_value
+	_builtin_checkbutton_control.texture_filter = texture_filter_value
 
 
 func _update_font_scale() -> void:

@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://c2ef4nyv2ebsy"]
+[gd_scene load_steps=13 format=3 uid="uid://c2ef4nyv2ebsy"]
 
 [ext_resource type="Script" path="res://Main.gd" id="1_r2ot1"]
 [ext_resource type="PackedScene" uid="uid://8mgnsraqnj2d" path="res://gui/SettingRow.tscn" id="2_i218e"]
@@ -6,6 +6,9 @@
 [ext_resource type="PackedScene" uid="uid://b0ujxspc3tcrn" path="res://scene/environments/Environment2D.tscn" id="4_inthc"]
 [ext_resource type="Texture2D" uid="uid://0d5kej8v1qg0" path="res://scene/assets/texture_1x.svg" id="5_1th6v"]
 [ext_resource type="PackedScene" uid="uid://c8dco853ln1y8" path="res://scene/environments/Environment3D.tscn" id="5_4t02t"]
+[ext_resource type="Texture2D" uid="uid://bmvp8krq6ukce" path="res://scene/assets/spinbox_updown_1x.svg" id="7_bibj3"]
+[ext_resource type="Texture2D" uid="uid://dibwdbxo128u2" path="res://scene/assets/checkbutton_checked_1x.svg" id="7_mfyq3"]
+[ext_resource type="Texture2D" uid="uid://dhwddcg3mexvu" path="res://scene/assets/checkbutton_unchecked_1x.svg" id="8_5kf4n"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a5bbp"]
 bg_color = Color(1, 0.247351, 0.652822, 1)
@@ -258,6 +261,31 @@ theme_type_variation = &"ExplanationLabel"
 text = "Mipmaps can be described as LOD for textures. When you increase the scale above, textures start to look crisp at bigger sizes. However, smaller sizes become jagged. Mipmaps help solve this issue by providing a version of the texture that is better scaled for different usage sizes.
 
 In this example, all textures are always imported with mipmapping enabled, but this is not the default. You must also enable mipmaps in texture filtering options, which is what this option does."
+autowrap_mode = 2
+
+[node name="TextureScriptedSetting" parent="ScrollContainer/MarginContainer/Layout/AssetSection" instance=ExtResource("2_i218e")]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Texture: Custom Script"
+options = Array[String](["Off", "On"])
+
+[node name="TextureScriptedExplanation" type="HBoxContainer" parent="ScrollContainer/MarginContainer/Layout/AssetSection"]
+layout_mode = 2
+
+[node name="Filler" type="Control" parent="ScrollContainer/MarginContainer/Layout/AssetSection/TextureScriptedExplanation"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="ScrollContainer/MarginContainer/Layout/AssetSection/TextureScriptedExplanation"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 3.0
+theme_type_variation = &"ExplanationLabel"
+text = "When a texture is used to style a built-in GUI widget, you don't have direct control over how it is going to be rendered. Control nodes do not provide a way to limit the size of most of their icons and textures. This means that when you swap the icon for another imported at a larger scale, it will render at its new native size (e.g. a 32x32 icon scaled two times will render at 64x64), which is not what you want for downsampling.
+
+Luckily, Godot is highly scriptable and custom subtypes of native resources are possible. With this you can create a custom script extending Texture2D that would rescale the texture to the desired size. You can design it in any way you want, exposing the target size or the scale factor for downsampling. Either way would work, it all depends on your workflow and needs.
+
+Enabling this option swaps standard texture with a scripted one. Check the ScaledTexture.gd file for the implementation."
 autowrap_mode = 2
 
 [node name="FontScaleSetting" parent="ScrollContainer/MarginContainer/Layout/AssetSection" instance=ExtResource("2_i218e")]
@@ -623,6 +651,7 @@ vertical_alignment = 1
 [node name="BuiltinSpinBox" type="SpinBox" parent="Window/UILayer/UIContent/Layout/Column2/BuiltinUI/BuiltinPreview1"]
 unique_name_in_owner = true
 layout_mode = 2
+theme_override_icons/updown = ExtResource("7_bibj3")
 
 [node name="BuiltinPreview2" type="HBoxContainer" parent="Window/UILayer/UIContent/Layout/Column2/BuiltinUI"]
 layout_mode = 2
@@ -657,4 +686,6 @@ vertical_alignment = 1
 unique_name_in_owner = true
 custom_minimum_size = Vector2(140, 0)
 layout_mode = 2
+theme_override_icons/checked = ExtResource("7_mfyq3")
+theme_override_icons/unchecked = ExtResource("8_5kf4n")
 text = "Toggle Me"
