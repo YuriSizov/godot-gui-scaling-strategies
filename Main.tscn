@@ -8,35 +8,26 @@
 [ext_resource type="PackedScene" uid="uid://c8dco853ln1y8" path="res://scene/environments/Environment3D.tscn" id="5_4t02t"]
 [ext_resource type="Texture2D" uid="uid://bmvp8krq6ukce" path="res://scene/assets/spinbox_updown_1x.svg" id="7_bibj3"]
 [ext_resource type="Texture2D" uid="uid://dibwdbxo128u2" path="res://scene/assets/checkbutton_checked_1x.svg" id="7_mfyq3"]
+[ext_resource type="Texture2D" uid="uid://cuoy5ve1kmett" path="res://scene/assets/ninepatch_texture_1x.svg" id="7_rpeur"]
 [ext_resource type="Texture2D" uid="uid://dhwddcg3mexvu" path="res://scene/assets/checkbutton_unchecked_1x.svg" id="8_5kf4n"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a5bbp"]
-bg_color = Color(1, 0.247351, 0.652822, 1)
-corner_radius_top_left = 12
-corner_radius_top_right = 4
-corner_radius_bottom_left = 36
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w3ovv"]
-bg_color = Color(1, 0.247059, 0.65098, 0)
-border_width_left = 4
-border_width_top = 4
-border_width_right = 4
-border_width_bottom = 4
-border_color = Color(1, 0.247059, 0.65098, 1)
-corner_radius_top_left = 12
-corner_radius_top_right = 4
-corner_radius_bottom_left = 36
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4csrp"]
 bg_color = Color(1, 0.247059, 0.65098, 1)
-border_width_left = 4
-border_width_top = 4
-border_width_right = 4
-border_width_bottom = 4
+border_width_left = 8
+border_width_top = 8
+border_width_right = 8
+border_width_bottom = 8
 border_color = Color(1, 1, 1, 1)
 corner_radius_top_left = 12
 corner_radius_top_right = 4
 corner_radius_bottom_left = 36
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_mqwt0"]
+texture = ExtResource("7_rpeur")
+texture_margin_left = 46.0
+texture_margin_top = 50.0
+texture_margin_right = 46.0
+texture_margin_bottom = 50.0
 
 [node name="Main" type="MarginContainer"]
 anchors_preset = 15
@@ -281,11 +272,13 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 3.0
 theme_type_variation = &"ExplanationLabel"
-text = "When a texture is used to style a built-in GUI widget, you don't have direct control over how it is going to be rendered. Control nodes do not provide a way to limit the size of most of their icons and textures. This means that when you swap the icon for another imported at a larger scale, it will render at its new native size (e.g. a 32x32 icon scaled two times will render at 64x64), which is not what you want for downsampling.
+text = "When a texture is used to style a built-in GUI widget, you don't have direct control over how it is going to be rendered. Control nodes do not provide a way to limit the size of most of their icons and textures. This means that when you swap the icon for another imported at a larger scale, it will render at its new native size (e.g. a 32x32 icon scaled two times will render at 64x64), when what you want in practice is downsampling back to 32x32.
 
 Luckily, Godot is highly scriptable and custom subtypes of native resources are possible. With this you can create a custom script extending Texture2D that would rescale the texture to the desired size. You can design it in any way you want, exposing the target size or the scale factor for downsampling. Either way would work, it all depends on your workflow and needs.
 
-Enabling this option swaps standard texture with a scripted one. Check the ScaledTexture.gd file for the implementation."
+Enabling this option swaps standard texture with a scripted one. Unfortunately, this doesn't work with 9-patch textures and textured styleboxes, as 9-patch rendering is not customizable with scripts.
+
+Check the ScaledTexture.gd file for the implementation."
 autowrap_mode = 2
 
 [node name="FontScaleSetting" parent="ScrollContainer/MarginContainer/Layout/AssetSection" instance=ExtResource("2_i218e")]
@@ -581,50 +574,37 @@ text = "Stylebox scaling"
 custom_minimum_size = Vector2(0, 2)
 layout_mode = 2
 
-[node name="StyleboxPreview1" type="HBoxContainer" parent="Window/UILayer/UIContent/Layout/Column2/Styleboxes"]
+[node name="StyleboxFlatPreview" type="HBoxContainer" parent="Window/UILayer/UIContent/Layout/Column2/Styleboxes"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Window/UILayer/UIContent/Layout/Column2/Styleboxes/StyleboxPreview1"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_type_variation = &"InfoLabel"
-text = "Flat Filled"
-vertical_alignment = 1
-
-[node name="StyleboxFlatPanel" type="Panel" parent="Window/UILayer/UIContent/Layout/Column2/Styleboxes/StyleboxPreview1"]
-custom_minimum_size = Vector2(90, 90)
-layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_a5bbp")
-
-[node name="StyleboxPreview2" type="HBoxContainer" parent="Window/UILayer/UIContent/Layout/Column2/Styleboxes"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="Window/UILayer/UIContent/Layout/Column2/Styleboxes/StyleboxPreview2"]
+[node name="Label" type="Label" parent="Window/UILayer/UIContent/Layout/Column2/Styleboxes/StyleboxFlatPreview"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"InfoLabel"
-text = "Flat Border"
+text = "Flat w/ border"
 vertical_alignment = 1
 
-[node name="StyleboxFlatPanel" type="Panel" parent="Window/UILayer/UIContent/Layout/Column2/Styleboxes/StyleboxPreview2"]
-custom_minimum_size = Vector2(90, 90)
-layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_w3ovv")
-
-[node name="StyleboxPreview3" type="HBoxContainer" parent="Window/UILayer/UIContent/Layout/Column2/Styleboxes"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="Window/UILayer/UIContent/Layout/Column2/Styleboxes/StyleboxPreview3"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_type_variation = &"InfoLabel"
-text = "Flat Combined"
-vertical_alignment = 1
-
-[node name="StyleboxFlatPanel" type="Panel" parent="Window/UILayer/UIContent/Layout/Column2/Styleboxes/StyleboxPreview3"]
+[node name="StyleboxFlatPanel" type="Panel" parent="Window/UILayer/UIContent/Layout/Column2/Styleboxes/StyleboxFlatPreview"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(90, 90)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_4csrp")
+
+[node name="StyleboxTexturePreview" type="HBoxContainer" parent="Window/UILayer/UIContent/Layout/Column2/Styleboxes"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Window/UILayer/UIContent/Layout/Column2/Styleboxes/StyleboxTexturePreview"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"InfoLabel"
+text = "Texture / 9-patch"
+vertical_alignment = 1
+
+[node name="StyleboxTexturePanel" type="Panel" parent="Window/UILayer/UIContent/Layout/Column2/Styleboxes/StyleboxTexturePreview"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_mqwt0")
 
 [node name="BuiltinUI" type="VBoxContainer" parent="Window/UILayer/UIContent/Layout/Column2"]
 layout_mode = 2

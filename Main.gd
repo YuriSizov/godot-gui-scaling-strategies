@@ -40,15 +40,20 @@ const TEXTURE_SCALE_OPTIONS: Array[Texture2D] = [
 	preload("res://scene/assets/texture_2x.svg"),
 	preload("res://scene/assets/texture_4x.svg"),
 ]
+const TEXTURE_SCALE_SPINBOX_OPTIONS: Array[Texture2D] = [
+	preload("res://scene/assets/spinbox_updown_1x.svg"),
+	preload("res://scene/assets/spinbox_updown_2x.svg"),
+	preload("res://scene/assets/spinbox_updown_4x.svg"),
+]
 const TEXTURE_SCALE_CHECKBUTTON_OPTIONS: Array[Texture2D] = [
 	preload("res://scene/assets/checkbutton_unchecked_1x.svg"), preload("res://scene/assets/checkbutton_checked_1x.svg"),
 	preload("res://scene/assets/checkbutton_unchecked_2x.svg"), preload("res://scene/assets/checkbutton_checked_2x.svg"),
 	preload("res://scene/assets/checkbutton_unchecked_4x.svg"), preload("res://scene/assets/checkbutton_checked_4x.svg"),
 ]
-const TEXTURE_SCALE_SPINBOX_OPTIONS: Array[Texture2D] = [
-	preload("res://scene/assets/spinbox_updown_1x.svg"),
-	preload("res://scene/assets/spinbox_updown_2x.svg"),
-	preload("res://scene/assets/spinbox_updown_4x.svg"),
+const TEXTURE_SCALE_STYLEBOX_OPTIONS: Array[Texture2D] = [
+	preload("res://scene/assets/ninepatch_texture_1x.svg"),
+	preload("res://scene/assets/ninepatch_texture_2x.svg"),
+	preload("res://scene/assets/ninepatch_texture_4x.svg"),
 ]
 const TEXTURE_SCALE_DEFAULT := 0
 
@@ -109,6 +114,8 @@ const PRESENTATION_SPACING := 20.0
 @onready var _text_label_40px: Label = %TextLabel40px
 @onready var _text_label_24px: Label = %TextLabel24px
 @onready var _text_label_10px: Label = %TextLabel10px
+
+@onready var _stylebox_texture_panel: Panel = %StyleboxTexturePanel
 
 @onready var _builtin_spinbox_control: SpinBox = %BuiltinSpinBox
 @onready var _builtin_button_control: Button = %BuiltinButton
@@ -250,15 +257,21 @@ func _update_texture_scale() -> void:
 	if texture_scale_idx >= 0:
 		scaled_texture = TEXTURE_SCALE_OPTIONS[texture_scale_idx]
 
+	var scaled_spinbox_texture := TEXTURE_SCALE_SPINBOX_OPTIONS[TEXTURE_SCALE_DEFAULT]
+	if texture_scale_idx >= 0:
+		scaled_spinbox_texture = TEXTURE_SCALE_SPINBOX_OPTIONS[texture_scale_idx]
+
 	var scaled_checkbutton_texture_unchecked := TEXTURE_SCALE_CHECKBUTTON_OPTIONS[2 * TEXTURE_SCALE_DEFAULT]
 	var scaled_checkbutton_texture_checked := TEXTURE_SCALE_CHECKBUTTON_OPTIONS[2 * TEXTURE_SCALE_DEFAULT + 1]
 	if texture_scale_idx >= 0:
 		scaled_checkbutton_texture_unchecked = TEXTURE_SCALE_CHECKBUTTON_OPTIONS[2 * texture_scale_idx]
 		scaled_checkbutton_texture_checked = TEXTURE_SCALE_CHECKBUTTON_OPTIONS[2 * texture_scale_idx + 1]
 
-	var scaled_spinbox_texture := TEXTURE_SCALE_SPINBOX_OPTIONS[TEXTURE_SCALE_DEFAULT]
+	var scaled_stylebox_texture := TEXTURE_SCALE_STYLEBOX_OPTIONS[TEXTURE_SCALE_DEFAULT]
 	if texture_scale_idx >= 0:
-		scaled_spinbox_texture = TEXTURE_SCALE_SPINBOX_OPTIONS[texture_scale_idx]
+		scaled_stylebox_texture = TEXTURE_SCALE_STYLEBOX_OPTIONS[texture_scale_idx]
+
+	# Use icon texture.
 
 	_texture_16x16.texture = scaled_texture
 	_texture_32x32.texture = scaled_texture
@@ -287,13 +300,24 @@ func _update_texture_scale() -> void:
 		scaled_checkbutton_texture_checked_scr.texture = scaled_checkbutton_texture_checked
 		scaled_checkbutton_texture_checked_scr.target_size = TEXTURE_SCALE_CHECKBUTTON_OPTIONS[1].get_size()
 
+		var scaled_stylebox_texture_scr := ScaledTexture.new()
+		scaled_stylebox_texture_scr.texture = scaled_stylebox_texture
+		scaled_stylebox_texture_scr.target_size = TEXTURE_SCALE_STYLEBOX_OPTIONS[0].get_size()
+
 		_builtin_spinbox_control.add_theme_icon_override("updown", scaled_spinbox_texture_scr)
 		_builtin_checkbutton_control.add_theme_icon_override("unchecked", scaled_checkbutton_texture_unchecked_scr)
 		_builtin_checkbutton_control.add_theme_icon_override("checked", scaled_checkbutton_texture_checked_scr)
+
+		var stylebox_texture := (_stylebox_texture_panel.get_theme_stylebox("panel") as StyleBoxTexture)
+		stylebox_texture.texture = scaled_stylebox_texture_scr
+
 	else:
 		_builtin_spinbox_control.add_theme_icon_override("updown", scaled_spinbox_texture)
 		_builtin_checkbutton_control.add_theme_icon_override("unchecked", scaled_checkbutton_texture_unchecked)
 		_builtin_checkbutton_control.add_theme_icon_override("checked", scaled_checkbutton_texture_checked)
+
+		var stylebox_texture := (_stylebox_texture_panel.get_theme_stylebox("panel") as StyleBoxTexture)
+		stylebox_texture.texture = scaled_stylebox_texture
 
 
 func _update_texture_mipmaps() -> void:
