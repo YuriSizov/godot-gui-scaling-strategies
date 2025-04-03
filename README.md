@@ -20,6 +20,9 @@ You will be welcomed by two windows: one for controlling the configuration optio
 another demonstrating the results. Each option comes with a hefty explanation giving it
 additional context. Some code comments can also be relevant and of use.
 
+An in-depth explanation of the problem and provided tips and solutions is
+also **[available in this article](https://humnom.net/thoughts/67b7374e-the-simplest-way-to-scale-ui-in-godot.html)**.
+
 
 ### License
 
